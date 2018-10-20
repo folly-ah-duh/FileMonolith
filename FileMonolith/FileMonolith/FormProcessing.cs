@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace FileMonolith
 {
-    public partial class Form1 : Form
+    public partial class FormProcessing : Form
     {
-        public Form1()
+        public FormProcessing()
         {
             InitializeComponent();
         }
