@@ -41,9 +41,9 @@
             // textArchives
             // 
             this.textArchives.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.textArchives.Enabled = false;
             this.textArchives.Location = new System.Drawing.Point(12, 25);
             this.textArchives.Name = "textArchives";
+            this.textArchives.ReadOnly = true;
             this.textArchives.Size = new System.Drawing.Size(316, 20);
             this.textArchives.TabIndex = 1;
             // 
@@ -55,13 +55,14 @@
             this.buttonOutDir.TabIndex = 4;
             this.buttonOutDir.Text = "...";
             this.buttonOutDir.UseVisualStyleBackColor = true;
+            this.buttonOutDir.Click += new System.EventHandler(this.buttonOutDir_Click);
             // 
             // textOutDir
             // 
             this.textOutDir.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.textOutDir.Enabled = false;
             this.textOutDir.Location = new System.Drawing.Point(12, 74);
             this.textOutDir.Name = "textOutDir";
+            this.textOutDir.ReadOnly = true;
             this.textOutDir.Size = new System.Drawing.Size(316, 20);
             this.textOutDir.TabIndex = 3;
             // 
@@ -73,6 +74,7 @@
             this.buttonStart.TabIndex = 5;
             this.buttonStart.Text = "Unpack";
             this.buttonStart.UseVisualStyleBackColor = true;
+            this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
             // 
             // buttonArchives
             // 
@@ -82,6 +84,7 @@
             this.buttonArchives.TabIndex = 2;
             this.buttonArchives.Text = "...";
             this.buttonArchives.UseVisualStyleBackColor = true;
+            this.buttonArchives.Click += new System.EventHandler(this.buttonArchives_Click);
             // 
             // labelArchives
             // 
