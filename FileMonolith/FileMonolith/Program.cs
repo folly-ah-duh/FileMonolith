@@ -6,6 +6,7 @@ using GzsTool.Core.Qar;
 using GzsTool.Core.Sbp;
 using GzsTool.Core.Utility;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
@@ -25,11 +26,11 @@ namespace FileMonolith
             Application.Run(new FormMain());
         }
 
-        public static void DoUnpack(string[] archiveFilePaths, string outputDir)
+        public static void DoUnpack(string[] archiveFilePaths, string outputDir, bool isCondensed)
         {
             ReadDictionaries();
             UnpackQarArchives(archiveFilePaths, outputDir);
-            UnpackChildArchives(outputDir);
+            UnpackChildArchives(outputDir, isCondensed);
         }
 
         public static void UnpackQarArchives(string[] qarFilePaths, string outputDir)
@@ -47,40 +48,82 @@ namespace FileMonolith
                 }
             }
         }
-
-        public static void UnpackChildArchives(string searchDirectory)
+        
+        public static void UnpackChildArchives(string rootDir, bool moveToRoot)
         {
-            string[] archiveFiles = Directory.GetFiles(searchDirectory, "*", SearchOption.AllDirectories);
-            foreach (string filePath in archiveFiles)
+            string[] archiveFiles = Directory.GetFiles(rootDir, "*", SearchOption.AllDirectories);
+            List<string> ChildPaths;
+            using (StreamWriter sw = File.CreateText(Path.Combine(rootDir, "TppFileList.txt")))
             {
-                string fileDir = Path.GetDirectoryName(filePath);
-                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
-                string extension = Path.GetExtension(filePath).Replace(".", "");
+                if (moveToRoot)
+                    foreach (string filePath in archiveFiles)
+                    {
+                        string fileDir = Path.GetDirectoryName(filePath);
+                        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
+                        string extension = Path.GetExtension(filePath).Replace(".", "");
 
-                string outputDirectoryPath = string.Format("{0}\\{1}_{2}", fileDir, fileNameWithoutExtension, extension);
+                        string unpackPath = string.Format("{0}\\{1}_{2}", fileDir, fileNameWithoutExtension, extension);
+                        string unpackPathWithoutRootDir = unpackPath.Remove(0, rootDir.Length);
 
-                switch (extension)
-                {
-                    case "fpk":
-                    case "fpkd":
-                        ReadArchive<FpkFile>(filePath, outputDirectoryPath);
-                        break;
-                    case "pftxs":
-                        ReadArchive<PftxsFile>(filePath, outputDirectoryPath);
-                        break;
-                    case "sbp":
-                        ReadArchive<SbpFile>(filePath, outputDirectoryPath);
-                        break;
-                }
+                        switch (extension)
+                        {
+                            case "fpk":
+                            case "fpkd":
+                                ChildPaths = ReadArchive<FpkFile>(filePath, rootDir);
+                                foreach (string childPath in ChildPaths)
+                                    sw.WriteLine(Path.Combine(unpackPathWithoutRootDir, childPath));
+                                break;
+                            case "pftxs":
+                                ChildPaths = ReadArchive<PftxsFile>(filePath, rootDir);
+                                foreach (string childPath in ChildPaths)
+                                    sw.WriteLine(Path.Combine(unpackPathWithoutRootDir, childPath));
+                                break;
+                            case "sbp":
+                                ChildPaths = ReadArchive<SbpFile>(filePath, rootDir);
+                                foreach (string childPath in ChildPaths)
+                                    sw.WriteLine(Path.Combine(unpackPathWithoutRootDir, childPath));
+                                break;
+                        }
+                    }
+                else
+                    foreach (string filePath in archiveFiles)
+                    {
+                        string fileDir = Path.GetDirectoryName(filePath);
+                        string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(filePath);
+                        string extension = Path.GetExtension(filePath).Replace(".", "");
+
+                        string unpackPath = string.Format("{0}\\{1}_{2}", fileDir, fileNameWithoutExtension, extension);
+                        string unpackPathWithoutRootDir = unpackPath.Remove(0, rootDir.Length);
+
+                        switch (extension)
+                        {
+                            case "fpk":
+                            case "fpkd":
+                                ChildPaths = ReadArchive<FpkFile>(filePath, unpackPath);
+                                foreach (string childPath in ChildPaths)
+                                    sw.WriteLine(Path.Combine(unpackPathWithoutRootDir, childPath));
+                                break;
+                            case "pftxs":
+                                ChildPaths = ReadArchive<PftxsFile>(filePath, unpackPath);
+                                foreach (string childPath in ChildPaths)
+                                    sw.WriteLine(Path.Combine(unpackPathWithoutRootDir, childPath));
+                                break;
+                            case "sbp":
+                                ChildPaths = ReadArchive<SbpFile>(filePath, unpackPath);
+                                foreach (string childPath in ChildPaths)
+                                    sw.WriteLine(Path.Combine(unpackPathWithoutRootDir, childPath));
+                                break;
+                        }
+                    }
             }
 
         }
 
-        public static void ReadArchive<T>(string filePath, string outputDir) where T : ArchiveFile, new()
+        public static List<string> ReadArchive<T>(string filePath, string outputDir) where T : ArchiveFile, new()
         {
-            Console.WriteLine(filePath);
 
             IDirectory iDir = new FileSystemDirectory(outputDir);
+            List<string> fileNames = new List<string>();
 
             using (FileStream input = new FileStream(filePath, FileMode.Open))
             {
@@ -89,11 +132,14 @@ namespace FileMonolith
                 file.Read(input);
                 foreach (var exportedFile in file.ExportFiles(input))
                 {
-                    Console.WriteLine(exportedFile.FileName);
-                    iDir.WriteFile(exportedFile.FileName, exportedFile.DataStream);
+                    string filename = exportedFile.FileName;
+
+                    fileNames.Add(filename);
+                    iDir.WriteFile(filename, exportedFile.DataStream);
                 }
 
             }
+            return fileNames;
         }
 
         private static void ReadDictionaries()

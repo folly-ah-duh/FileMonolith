@@ -22,6 +22,8 @@ namespace FileMonolith
 
         private string outputDir { get; set; }
 
+        private bool condensed { get; set; }
+
         private void buttonArchives_Click(object sender, EventArgs e)
         {
             OpenFileDialog inputDialog = new OpenFileDialog();
@@ -54,7 +56,7 @@ namespace FileMonolith
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            Program.DoUnpack(archivePaths, outputDir);
+            Program.DoUnpack(archivePaths, outputDir, checkCondenseDir.Checked);
         }
     }
 }
