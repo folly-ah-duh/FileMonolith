@@ -16,5 +16,9 @@ namespace FileMonolith
         {
             InitializeComponent();
         }
+        public void OnSendFeedback(object source, FeedbackEventArgs e)
+        {
+            labelCurrentFile.Invoke(new Action(() => labelCurrentFile.Text = e.Feedback));
+        }
     }
 }

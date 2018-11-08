@@ -56,7 +56,16 @@ namespace FileMonolith
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            Program.DoUnpack(archivePaths, outputDir, checkCondenseDir.Checked);
+            ArchiveUnpacker archiveUnpacker = new ArchiveUnpacker();
+            FormProcessing processWindow = new FormProcessing();
+            archiveUnpacker.SendFeedback += processWindow.OnSendFeedback;
+            if (archivePaths != null)
+                if (outputDir != null)
+                    ProcessingWindow.Show(archiveUnpacker, processWindow, new Action((MethodInvoker)delegate { archiveUnpacker.DoUnpack(archivePaths, outputDir, checkCondenseDir.Checked); }));
+                else
+                    MessageBox.Show("Please select an output directory.");
+            else
+                MessageBox.Show("Please choose which archives to unpack.");
         }
     }
 }

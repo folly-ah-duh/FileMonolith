@@ -28,34 +28,46 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormProcessing));
             this.labelUnpack = new System.Windows.Forms.Label();
             this.labelCurrentFile = new System.Windows.Forms.Label();
+            this.pictureSpiral = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureSpiral)).BeginInit();
             this.SuspendLayout();
             // 
             // labelUnpack
             // 
-            this.labelUnpack.Location = new System.Drawing.Point(12, 9);
+            this.labelUnpack.Location = new System.Drawing.Point(12, 12);
             this.labelUnpack.Name = "labelUnpack";
-            this.labelUnpack.Size = new System.Drawing.Size(307, 23);
+            this.labelUnpack.Size = new System.Drawing.Size(310, 23);
             this.labelUnpack.TabIndex = 0;
-            this.labelUnpack.Text = "Unpacking...";
+            this.labelUnpack.Text = "Unpacking, please wait...";
             this.labelUnpack.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelCurrentFile
             // 
-            this.labelCurrentFile.Location = new System.Drawing.Point(12, 32);
+            this.labelCurrentFile.Location = new System.Drawing.Point(12, 50);
             this.labelCurrentFile.Name = "labelCurrentFile";
-            this.labelCurrentFile.Size = new System.Drawing.Size(307, 43);
+            this.labelCurrentFile.Size = new System.Drawing.Size(310, 43);
             this.labelCurrentFile.TabIndex = 1;
-            this.labelCurrentFile.Text = "[File Currently being unpacked]";
             this.labelCurrentFile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pictureSpiral
+            // 
+            this.pictureSpiral.Image = ((System.Drawing.Image)(resources.GetObject("pictureSpiral.Image")));
+            this.pictureSpiral.Location = new System.Drawing.Point(12, 12);
+            this.pictureSpiral.Name = "pictureSpiral";
+            this.pictureSpiral.Size = new System.Drawing.Size(36, 35);
+            this.pictureSpiral.TabIndex = 2;
+            this.pictureSpiral.TabStop = false;
             // 
             // FormProcessing
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(331, 84);
+            this.ClientSize = new System.Drawing.Size(334, 102);
             this.ControlBox = false;
+            this.Controls.Add(this.pictureSpiral);
             this.Controls.Add(this.labelCurrentFile);
             this.Controls.Add(this.labelUnpack);
             this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
@@ -67,6 +79,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Processing...";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureSpiral)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -75,5 +88,6 @@
 
         private System.Windows.Forms.Label labelUnpack;
         private System.Windows.Forms.Label labelCurrentFile;
+        private System.Windows.Forms.PictureBox pictureSpiral;
     }
 }
