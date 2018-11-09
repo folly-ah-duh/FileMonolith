@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FileMonolith
 {
     public static class ProcessingWindow
     {
-        public static void Show(ArchiveUnpacker unpacker, FormProcessing processWindow, Action WorkerFunction)
+        public static void Show(UnpackManager unpacker, FormProcessesingUnpack processWindow, Action WorkerFunction)
         {
             BackgroundWorker processWorker = new BackgroundWorker();
 
@@ -25,6 +21,7 @@ namespace FileMonolith
                 });
                 processWorker.Dispose();
             });
+
             processWorker.RunWorkerAsync();
             processWindow.ShowDialog();
         }

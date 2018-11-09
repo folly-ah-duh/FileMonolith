@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E40EC0B4-4232-417D-B041-97AC71381EA3}</ProjectGuid>
+    <ProjectGuid>{D78BED57-43D5-49C8-8087-49FFC48DAD3D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FileMonolith</RootNamespace>
-    <AssemblyName>FileMonolith</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>FileProliferator</RootNamespace>
+    <AssemblyName>FileProliferator</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,12 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GzsTool.Core">
-      <HintPath>..\..\..\..\..\Documents\Visual Studio 2015\Projects\GzsTool.v0.5.3.1b\GzsTool.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,27 +45,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnpackManager.cs" />
-    <Compile Include="FormUnpacker.cs">
+    <Compile Include="FormProcessingProliferation.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormUnpacker.Designer.cs">
-      <DependentUpon>FormUnpacker.cs</DependentUpon>
+    <Compile Include="FormProcessingProliferation.Designer.cs">
+      <DependentUpon>FormProcessingProliferation.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormProcessesingUnpack.cs">
+    <Compile Include="FormProliferator.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormProcessesingUnpack.Designer.cs">
-      <DependentUpon>FormProcessesingUnpack.cs</DependentUpon>
+    <Compile Include="FormProliferator.Designer.cs">
+      <DependentUpon>FormProliferator.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProcessingWindow.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="ProliferateManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormUnpacker.resx">
-      <DependentUpon>FormUnpacker.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormProcessesingUnpack.resx">
-      <DependentUpon>FormProcessesingUnpack.cs</DependentUpon>
+    <EmbeddedResource Include="FormProliferator.resx">
+      <DependentUpon>FormProliferator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

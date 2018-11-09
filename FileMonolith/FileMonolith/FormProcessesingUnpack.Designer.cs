@@ -1,6 +1,6 @@
 ﻿namespace FileMonolith
 {
-    partial class FormProcessing
+    partial class FormProcessesingUnpack
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormProcessing));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormProcessesingUnpack));
             this.labelUnpack = new System.Windows.Forms.Label();
             this.labelCurrentFile = new System.Windows.Forms.Label();
             this.pictureSpiral = new System.Windows.Forms.PictureBox();

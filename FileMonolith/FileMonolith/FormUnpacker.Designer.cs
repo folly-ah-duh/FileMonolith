@@ -1,6 +1,6 @@
 ﻿namespace FileMonolith
 {
-    partial class FormMain
+    partial class FormUnpacker
     {
         /// <summary>
         /// Required designer variable.
@@ -41,15 +41,16 @@
             // textArchives
             // 
             this.textArchives.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.textArchives.Enabled = false;
             this.textArchives.Location = new System.Drawing.Point(12, 25);
             this.textArchives.Name = "textArchives";
             this.textArchives.ReadOnly = true;
-            this.textArchives.Size = new System.Drawing.Size(316, 20);
+            this.textArchives.Size = new System.Drawing.Size(445, 20);
             this.textArchives.TabIndex = 1;
             // 
             // buttonOutDir
             // 
-            this.buttonOutDir.Location = new System.Drawing.Point(334, 72);
+            this.buttonOutDir.Location = new System.Drawing.Point(463, 72);
             this.buttonOutDir.Name = "buttonOutDir";
             this.buttonOutDir.Size = new System.Drawing.Size(29, 23);
             this.buttonOutDir.TabIndex = 4;
@@ -60,15 +61,16 @@
             // textOutDir
             // 
             this.textOutDir.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.textOutDir.Enabled = false;
             this.textOutDir.Location = new System.Drawing.Point(12, 74);
             this.textOutDir.Name = "textOutDir";
             this.textOutDir.ReadOnly = true;
-            this.textOutDir.Size = new System.Drawing.Size(316, 20);
+            this.textOutDir.Size = new System.Drawing.Size(445, 20);
             this.textOutDir.TabIndex = 3;
             // 
             // buttonStart
             // 
-            this.buttonStart.Location = new System.Drawing.Point(291, 115);
+            this.buttonStart.Location = new System.Drawing.Point(420, 117);
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(72, 33);
             this.buttonStart.TabIndex = 5;
@@ -78,7 +80,7 @@
             // 
             // buttonArchives
             // 
-            this.buttonArchives.Location = new System.Drawing.Point(334, 23);
+            this.buttonArchives.Location = new System.Drawing.Point(463, 23);
             this.buttonArchives.Name = "buttonArchives";
             this.buttonArchives.Size = new System.Drawing.Size(29, 23);
             this.buttonArchives.TabIndex = 2;
@@ -100,25 +102,25 @@
             this.labelOutDir.AutoSize = true;
             this.labelOutDir.Location = new System.Drawing.Point(12, 58);
             this.labelOutDir.Name = "labelOutDir";
-            this.labelOutDir.Size = new System.Drawing.Size(87, 13);
+            this.labelOutDir.Size = new System.Drawing.Size(74, 13);
             this.labelOutDir.TabIndex = 8;
-            this.labelOutDir.Text = "Output Directory:";
+            this.labelOutDir.Text = "Output Folder:";
             // 
             // checkCondenseDir
             // 
             this.checkCondenseDir.AutoSize = true;
-            this.checkCondenseDir.Location = new System.Drawing.Point(12, 124);
+            this.checkCondenseDir.Location = new System.Drawing.Point(12, 126);
             this.checkCondenseDir.Name = "checkCondenseDir";
             this.checkCondenseDir.Size = new System.Drawing.Size(171, 17);
             this.checkCondenseDir.TabIndex = 9;
             this.checkCondenseDir.Text = "Condensed Directory Structure";
             this.checkCondenseDir.UseVisualStyleBackColor = true;
             // 
-            // FormMain
+            // FormUnpacker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(375, 160);
+            this.ClientSize = new System.Drawing.Size(504, 162);
             this.Controls.Add(this.checkCondenseDir);
             this.Controls.Add(this.labelOutDir);
             this.Controls.Add(this.labelArchives);
@@ -127,7 +129,9 @@
             this.Controls.Add(this.buttonOutDir);
             this.Controls.Add(this.textOutDir);
             this.Controls.Add(this.textArchives);
-            this.Name = "FormMain";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.Name = "FormUnpacker";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Archive Unpacker";
