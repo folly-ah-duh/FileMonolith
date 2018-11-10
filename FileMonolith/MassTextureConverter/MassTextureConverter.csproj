@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D78BED57-43D5-49C8-8087-49FFC48DAD3D}</ProjectGuid>
+    <ProjectGuid>{021E8ABB-26CF-4D0B-9494-EC26B6EB0866}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FileProliferator</RootNamespace>
-    <AssemblyName>File Proliferator</AssemblyName>
+    <RootNamespace>MassTextureConverter</RootNamespace>
+    <AssemblyName>MassTextureConverter</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FtexTool">
+      <HintPath>..\..\..\..\..\Downloads\FtexTool-0.4.0\FtexTool-0.4.0\FtexTool\bin\Debug\FtexTool.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,29 +48,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvertManager.cs" />
     <Compile Include="FolderSelectDialog\FolderSelectDialog.cs" />
     <Compile Include="FolderSelectDialog\Reflector.cs" />
-    <Compile Include="FormProcessingProliferation.cs">
+    <Compile Include="FormMassTexConverter.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormProcessingProliferation.Designer.cs">
-      <DependentUpon>FormProcessingProliferation.cs</DependentUpon>
+    <Compile Include="FormMassTexConverter.Designer.cs">
+      <DependentUpon>FormMassTexConverter.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormProliferator.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormProliferator.Designer.cs">
-      <DependentUpon>FormProliferator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ProcessingWindow.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ProliferateManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormProcessingProliferation.resx">
-      <DependentUpon>FormProcessingProliferation.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormProliferator.resx">
-      <DependentUpon>FormProliferator.cs</DependentUpon>
+    <EmbeddedResource Include="FormMassTexConverter.resx">
+      <DependentUpon>FormMassTexConverter.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -91,6 +84,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

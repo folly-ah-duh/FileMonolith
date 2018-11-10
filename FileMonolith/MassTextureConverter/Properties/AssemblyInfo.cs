@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ArchiveUnpacker")]
+[assembly: AssemblyTitle("MassTextureConverter")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ArchiveUnpacker")]
+[assembly: AssemblyProduct("MassTextureConverter")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e40ec0b4-4232-417d-b041-97ac71381ea3")]
+[assembly: Guid("021e8abb-26cf-4d0b-9494-ec26b6eb0866")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -11,7 +11,7 @@ using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace FileMonolith
+namespace ArchiveUnpacker
 {
     public class FeedbackEventArgs : EventArgs { public string Feedback { get; set; } }
 
@@ -19,9 +19,9 @@ namespace FileMonolith
     {
         public event EventHandler<FeedbackEventArgs> SendFeedback;
 
-        protected virtual void OnSendFeedback(string _archiveName)
+        protected virtual void OnSendFeedback(string feedback)
         {
-            SendFeedback?.Invoke(this, new FeedbackEventArgs() { Feedback = _archiveName });
+            SendFeedback?.Invoke(this, new FeedbackEventArgs() { Feedback = feedback });
         }
 
         public void DoUnpack(string[] archiveFilePaths, string outputDir, bool isCondensed)
@@ -75,12 +75,12 @@ namespace FileMonolith
 
         public void UnpackChildArchives(string rootDir, bool moveToRoot) // note: archives preexisting in the rootDir will be read. Unintended functionality, not sure whether to change it.
         {
-            File.Delete(Path.Combine(rootDir, "TppFileList.txt")); // TppFileList.txt should live with the .exe's and a TppMasterFileList.txt, so that the user can swap out the master file list
+            File.Delete("TppFileList.txt"); // TppFileList.txt should live with the .exe's and a TppMasterFileList.txt, so that the user can swap out the master file list
 
             string[] archiveFiles = Directory.GetFiles(rootDir, "*", SearchOption.AllDirectories);
             List<string> ChildPaths;
 
-            using (StreamWriter TppFileList = File.CreateText(Path.Combine(rootDir, "TppFileList.txt")))
+            using (StreamWriter TppFileList = File.CreateText("TppFileList.txt"))
             {
                 if (moveToRoot)
                     foreach (string filePath in archiveFiles)

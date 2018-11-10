@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ArchiveUnpacker
+namespace MassTextureConverter
 {
     static class Program
     {
@@ -13,7 +16,7 @@ namespace ArchiveUnpacker
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormUnpacker());
+            Application.Run(new FormMassTexConverter());
         }
     }
 }

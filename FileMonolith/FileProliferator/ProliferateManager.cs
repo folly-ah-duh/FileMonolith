@@ -7,54 +7,60 @@ using System.Threading.Tasks;
 
 namespace FileProliferator
 {
-    class ProliferateManager // todo: events and processing window,  + texture packing options
+    public class FeedbackEventArgs : EventArgs { public string Feedback { get; set; } }
+
+    public class ProliferateManager // todo: events and processing window,  + texture packing options
     {
+        public event EventHandler<FeedbackEventArgs> SendFeedback;
+
+        public string[] TppFileList = File.ReadAllLines("TppMasterFileList.txt");
+
+        protected virtual void OnSendFeedback(string feedback)
+        {
+            SendFeedback?.Invoke(this, new FeedbackEventArgs() { Feedback = feedback });
+        }
+
         public void DoProliferate(string[] filesToProlif, string outputPath)
         {
             foreach(string fileToProlif in filesToProlif)
             {
                 string fileName = Path.GetFileName(fileToProlif);
                 List<string> foundDirectories = SearchDirectories(fileName);
+
                 if (foundDirectories.Count() == 0)
-                    Console.WriteLine("No results for {0}", fileName);
+                    OnSendFeedback(string.Format("No results for {0}", fileName));
                 else
-                    CopyFilesToDirectories(foundDirectories, outputPath, filesToProlif);
+                {
+                    OnSendFeedback(fileName);
+                    CopyFilesToDirectories(outputPath, foundDirectories, fileToProlif);
+                }
             }
         }
 
-        public void DoProliferateWithReference(string[] filesToProlif, string outputPath, string referenceFile)
+        public void DoProliferateFromReference(string[] filesToProlif, string outputPath, string referenceFile)
         {
             List<string> foundDirectories = SearchDirectories(referenceFile);
+
             if (foundDirectories.Count() == 0)
-                Console.WriteLine("No results found for {0}", referenceFile);
+                OnSendFeedback(string.Format("No results for {0}", referenceFile));
             else
-                CopyFilesToDirectories(foundDirectories, outputPath, filesToProlif);
+            {
+                OnSendFeedback(referenceFile);
+                CopyFilesToDirectories(outputPath, foundDirectories, filesToProlif);
+            }
         }
 
         public List<string> SearchDirectories(string fileName)
         {
-            string[] TppFileList = File.ReadAllLines("TppFileList.txt");
             List<string> foundDirectories = new List<string>();
+
             foreach (string TppFile in TppFileList)
                 if (TppFile.EndsWith(fileName))
                     foundDirectories.Add(Path.GetDirectoryName(TppFile));
             return foundDirectories;
         }
 
-        public void CopyFilesToDirectories(string filePath, List<string> tppPaths, string outputPath)
-        {
-            foreach(string tppPath in tppPaths)
-            {
-                string fullPath = Path.Combine(outputPath, tppPath);
-                string newFilePath = Path.Combine(fullPath, Path.GetFileName(filePath));
-                if (!Directory.Exists(fullPath))
-                    Directory.CreateDirectory(fullPath);
-                File.Copy(filePath, newFilePath, true);
-                Console.WriteLine("Copied to {0}", newFilePath);
-            }
-        }
-
-        public void CopyFilesToDirectories(List<string> tppPaths, string outputPath, params string[] filepaths)
+        public void CopyFilesToDirectories(string outputPath, List<string> tppPaths, params string[] filepaths)
         {
             foreach (string tppPath in tppPaths)
             {

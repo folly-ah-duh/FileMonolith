@@ -1,9 +1,10 @@
-﻿using System;
+﻿using FolderSelect;
+using System;
 using System.IO;
 using System.Windows.Forms;
 using static System.Environment;
 
-namespace FileMonolith
+namespace ArchiveUnpacker
 {
     public partial class FormUnpacker : Form
     {
@@ -42,18 +43,13 @@ namespace FileMonolith
 
         private void buttonOutDir_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog outputDialogue = new FolderBrowserDialog();
-            outputDialogue.ShowNewFolderButton = true;
-            outputDialogue.Description = "Choose a folder where the .dat files will unpack into. Making a new folder is highly recommended.";
-            outputDialogue.RootFolder = SpecialFolder.MyComputer;
-            if (archivePaths != null)
-                outputDialogue.SelectedPath = Path.GetDirectoryName(archivePaths[0]);
+            FolderSelectDialog selectionDialog = new FolderSelectDialog();
+            selectionDialog.Title = "Choose a folder where the .dat files will unpack into. Making a new folder is highly recommended.";
+            if (selectionDialog.ShowDialog() != true) return;
+            string directoryPath = selectionDialog.FileName;
 
-            DialogResult selectionResult = outputDialogue.ShowDialog();
-            if (selectionResult != DialogResult.OK) return;
-
-            outputDir = outputDialogue.SelectedPath;
-            textOutDir.Text = outputDir;
+            outputDir = directoryPath;
+            textOutDir.Text = directoryPath;
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
@@ -64,7 +60,10 @@ namespace FileMonolith
 
             if (archivePaths != null)
                 if (outputDir != null)
-                    ProcessingWindow.Show(archiveUnpacker, processWindow, new Action((MethodInvoker)delegate { archiveUnpacker.DoUnpack(archivePaths, outputDir, checkCondenseDir.Checked); }));
+                {
+                    ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { archiveUnpacker.DoUnpack(archivePaths, outputDir, checkCondenseDir.Checked); }));
+                    MessageBox.Show("Done");
+                }
                 else
                     MessageBox.Show("Please select an output folder.");
             else

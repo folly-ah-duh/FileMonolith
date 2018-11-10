@@ -7,8 +7,8 @@
     <ProjectGuid>{E40EC0B4-4232-417D-B041-97AC71381EA3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FileMonolith</RootNamespace>
-    <AssemblyName>FileMonolith</AssemblyName>
+    <RootNamespace>ArchiveUnpacker</RootNamespace>
+    <AssemblyName>Archive Unpacker</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FolderSelectDialog\FolderSelectDialog.cs" />
+    <Compile Include="FolderSelectDialog\Reflector.cs" />
     <Compile Include="UnpackManager.cs" />
     <Compile Include="FormUnpacker.cs">
       <SubType>Form</SubType>
@@ -80,6 +82,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

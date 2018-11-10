@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FolderSelect;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -65,30 +66,33 @@ namespace FileProliferator
 
         private void buttonOutDir_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog outputDialogue = new FolderBrowserDialog();
-            outputDialogue.ShowNewFolderButton = true;
-            outputDialogue.Description = "Choose a folder where the directory structure will be created. Making a new folder is highly recommended.";
-            outputDialogue.RootFolder = SpecialFolder.MyComputer;
-            if (selectedFilePaths != null)
-                outputDialogue.SelectedPath = Path.GetDirectoryName(selectedFilePaths[0]);
+            FolderSelectDialog selectionDialog = new FolderSelectDialog();
+            selectionDialog.Title = "Choose a folder where the .dat files will unpack into. Making a new folder is highly recommended.";
+            if (selectionDialog.ShowDialog() != true) return;
+            string directoryPath = selectionDialog.FileName;
 
-            DialogResult selectionResult = outputDialogue.ShowDialog();
-            if (selectionResult != DialogResult.OK) return;
-
-            outputDirectory = outputDialogue.SelectedPath;
-            textOutDir.Text = outputDirectory;
+            outputDirectory = directoryPath;
+            textOutDir.Text = directoryPath;
         }
 
         private void buttonProliferate_Click(object sender, EventArgs e)
         {
             ProliferateManager Proliferator = new ProliferateManager();
+            FormProcessingProliferation processWindow = new FormProcessingProliferation();
+            Proliferator.SendFeedback += processWindow.OnSendFeedback;
 
             if (selectedFilePaths != null)
                 if (outputDirectory != null)
                     if (!checkRefFile.Checked)
-                        Proliferator.DoProliferate(selectedFilePaths, outputDirectory);
+                    {
+                        ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { Proliferator.DoProliferate(selectedFilePaths, outputDirectory); }));
+                        MessageBox.Show("Done");
+                    }
                     else if (checkRefFile.Checked && referenceFileName != null)
-                        Proliferator.DoProliferateWithReference(selectedFilePaths, outputDirectory, referenceFileName);
+                    {
+                        ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { Proliferator.DoProliferateFromReference(selectedFilePaths, outputDirectory, referenceFileName); }));
+                        MessageBox.Show("Done");
+                    }
                     else
                         MessageBox.Show("Please select a Reference File.");
                 else

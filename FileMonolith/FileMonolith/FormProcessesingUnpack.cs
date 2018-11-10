@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace FileMonolith
+namespace ArchiveUnpacker
 {
     public partial class FormProcessesingUnpack : Form
     {

@@ -1,4 +1,4 @@
-﻿namespace FileMonolith
+﻿namespace ArchiveUnpacker
 {
     partial class FormProcessesingUnpack
     {
@@ -37,35 +37,35 @@
             // 
             // labelUnpack
             // 
-            this.labelUnpack.Location = new System.Drawing.Point(12, 12);
+            this.labelUnpack.Location = new System.Drawing.Point(12, 8);
             this.labelUnpack.Name = "labelUnpack";
-            this.labelUnpack.Size = new System.Drawing.Size(310, 23);
+            this.labelUnpack.Size = new System.Drawing.Size(306, 23);
             this.labelUnpack.TabIndex = 0;
-            this.labelUnpack.Text = "Unpacking, please wait...";
+            this.labelUnpack.Text = "Building, please wait...";
             this.labelUnpack.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelCurrentFile
             // 
-            this.labelCurrentFile.Location = new System.Drawing.Point(12, 50);
+            this.labelCurrentFile.Location = new System.Drawing.Point(12, 46);
             this.labelCurrentFile.Name = "labelCurrentFile";
-            this.labelCurrentFile.Size = new System.Drawing.Size(310, 43);
+            this.labelCurrentFile.Size = new System.Drawing.Size(306, 43);
             this.labelCurrentFile.TabIndex = 1;
             this.labelCurrentFile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureSpiral
             // 
             this.pictureSpiral.Image = ((System.Drawing.Image)(resources.GetObject("pictureSpiral.Image")));
-            this.pictureSpiral.Location = new System.Drawing.Point(12, 12);
+            this.pictureSpiral.Location = new System.Drawing.Point(12, 8);
             this.pictureSpiral.Name = "pictureSpiral";
             this.pictureSpiral.Size = new System.Drawing.Size(36, 35);
             this.pictureSpiral.TabIndex = 2;
             this.pictureSpiral.TabStop = false;
             // 
-            // FormProcessing
+            // FormProcessesingUnpack
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(334, 102);
+            this.ClientSize = new System.Drawing.Size(330, 98);
             this.ControlBox = false;
             this.Controls.Add(this.pictureSpiral);
             this.Controls.Add(this.labelCurrentFile);
@@ -74,7 +74,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FormProcessing";
+            this.Name = "FormProcessesingUnpack";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

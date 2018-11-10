@@ -28,11 +28,66 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormProcessingProliferation));
+            this.pictureSpiral = new System.Windows.Forms.PictureBox();
+            this.labelCurrentFile = new System.Windows.Forms.Label();
+            this.labelUnpack = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureSpiral)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // pictureSpiral
+            // 
+            this.pictureSpiral.Image = ((System.Drawing.Image)(resources.GetObject("pictureSpiral.Image")));
+            this.pictureSpiral.Location = new System.Drawing.Point(12, 8);
+            this.pictureSpiral.Name = "pictureSpiral";
+            this.pictureSpiral.Size = new System.Drawing.Size(36, 35);
+            this.pictureSpiral.TabIndex = 5;
+            this.pictureSpiral.TabStop = false;
+            // 
+            // labelCurrentFile
+            // 
+            this.labelCurrentFile.Location = new System.Drawing.Point(12, 46);
+            this.labelCurrentFile.Name = "labelCurrentFile";
+            this.labelCurrentFile.Size = new System.Drawing.Size(306, 43);
+            this.labelCurrentFile.TabIndex = 4;
+            this.labelCurrentFile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelUnpack
+            // 
+            this.labelUnpack.Location = new System.Drawing.Point(12, 8);
+            this.labelUnpack.Name = "labelUnpack";
+            this.labelUnpack.Size = new System.Drawing.Size(306, 23);
+            this.labelUnpack.TabIndex = 3;
+            this.labelUnpack.Text = "Unpacking, please wait...";
+            this.labelUnpack.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // FormProcessingProliferation
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "FormProcessingProliferation";
+            this.ClientSize = new System.Drawing.Size(330, 98);
+            this.ControlBox = false;
+            this.Controls.Add(this.pictureSpiral);
+            this.Controls.Add(this.labelCurrentFile);
+            this.Controls.Add(this.labelUnpack);
+            this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "FormProcessingProliferation";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Processing...";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureSpiral)).EndInit();
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.PictureBox pictureSpiral;
+        private System.Windows.Forms.Label labelCurrentFile;
+        private System.Windows.Forms.Label labelUnpack;
     }
 }

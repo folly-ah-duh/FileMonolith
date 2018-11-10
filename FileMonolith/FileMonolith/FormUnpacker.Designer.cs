@@ -1,4 +1,4 @@
-﻿namespace FileMonolith
+﻿namespace ArchiveUnpacker
 {
     partial class FormUnpacker
     {
