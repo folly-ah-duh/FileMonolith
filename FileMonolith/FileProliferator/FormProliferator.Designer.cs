@@ -38,6 +38,15 @@
             this.labelOutDir = new System.Windows.Forms.Label();
             this.buttonOutDir = new System.Windows.Forms.Button();
             this.textOutDir = new System.Windows.Forms.TextBox();
+            this.groupTextureOptions = new System.Windows.Forms.GroupBox();
+            this.checkPackPftxs = new System.Windows.Forms.CheckBox();
+            this.checkPullTextures = new System.Windows.Forms.CheckBox();
+            this.checkConvertDds = new System.Windows.Forms.CheckBox();
+            this.buttonTextureDir = new System.Windows.Forms.Button();
+            this.textTextureDir = new System.Windows.Forms.TextBox();
+            this.groupStructureOptions = new System.Windows.Forms.GroupBox();
+            this.groupTextureOptions.SuspendLayout();
+            this.groupStructureOptions.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonFiles
@@ -69,7 +78,7 @@
             // 
             // buttonProliferate
             // 
-            this.buttonProliferate.Location = new System.Drawing.Point(350, 162);
+            this.buttonProliferate.Location = new System.Drawing.Point(350, 95);
             this.buttonProliferate.Name = "buttonProliferate";
             this.buttonProliferate.Size = new System.Drawing.Size(142, 33);
             this.buttonProliferate.TabIndex = 3;
@@ -80,36 +89,36 @@
             // checkRefFile
             // 
             this.checkRefFile.AutoSize = true;
-            this.checkRefFile.Location = new System.Drawing.Point(12, 57);
+            this.checkRefFile.Location = new System.Drawing.Point(6, 19);
             this.checkRefFile.Name = "checkRefFile";
-            this.checkRefFile.Size = new System.Drawing.Size(333, 17);
+            this.checkRefFile.Size = new System.Drawing.Size(334, 17);
             this.checkRefFile.TabIndex = 4;
-            this.checkRefFile.Text = "Use Reference File (copy files to anywhere that contains this file):";
+            this.checkRefFile.Text = "Use Reference File (Copy files to anywhere that contains this file):";
             this.checkRefFile.UseVisualStyleBackColor = true;
             this.checkRefFile.CheckedChanged += new System.EventHandler(this.checkRefFile_CheckedChanged);
             // 
             // textRefFile
             // 
             this.textRefFile.Enabled = false;
-            this.textRefFile.Location = new System.Drawing.Point(12, 80);
+            this.textRefFile.Location = new System.Drawing.Point(6, 42);
             this.textRefFile.Name = "textRefFile";
-            this.textRefFile.Size = new System.Drawing.Size(445, 20);
+            this.textRefFile.Size = new System.Drawing.Size(336, 20);
             this.textRefFile.TabIndex = 6;
             // 
             // buttonRefFile
             // 
-            this.buttonRefFile.Location = new System.Drawing.Point(463, 78);
+            this.buttonRefFile.Location = new System.Drawing.Point(348, 40);
             this.buttonRefFile.Name = "buttonRefFile";
-            this.buttonRefFile.Size = new System.Drawing.Size(29, 23);
+            this.buttonRefFile.Size = new System.Drawing.Size(126, 23);
             this.buttonRefFile.TabIndex = 5;
-            this.buttonRefFile.Text = "...";
+            this.buttonRefFile.Text = "Select Reference...";
             this.buttonRefFile.UseVisualStyleBackColor = true;
             this.buttonRefFile.Click += new System.EventHandler(this.buttonRefFile_Click);
             // 
             // labelOutDir
             // 
             this.labelOutDir.AutoSize = true;
-            this.labelOutDir.Location = new System.Drawing.Point(12, 119);
+            this.labelOutDir.Location = new System.Drawing.Point(12, 50);
             this.labelOutDir.Name = "labelOutDir";
             this.labelOutDir.Size = new System.Drawing.Size(74, 13);
             this.labelOutDir.TabIndex = 11;
@@ -117,7 +126,7 @@
             // 
             // buttonOutDir
             // 
-            this.buttonOutDir.Location = new System.Drawing.Point(463, 133);
+            this.buttonOutDir.Location = new System.Drawing.Point(463, 64);
             this.buttonOutDir.Name = "buttonOutDir";
             this.buttonOutDir.Size = new System.Drawing.Size(29, 23);
             this.buttonOutDir.TabIndex = 10;
@@ -129,23 +138,99 @@
             // 
             this.textOutDir.BackColor = System.Drawing.SystemColors.MenuBar;
             this.textOutDir.Enabled = false;
-            this.textOutDir.Location = new System.Drawing.Point(12, 135);
+            this.textOutDir.Location = new System.Drawing.Point(12, 66);
             this.textOutDir.Name = "textOutDir";
             this.textOutDir.ReadOnly = true;
             this.textOutDir.Size = new System.Drawing.Size(445, 20);
             this.textOutDir.TabIndex = 9;
             // 
+            // groupTextureOptions
+            // 
+            this.groupTextureOptions.Controls.Add(this.checkPackPftxs);
+            this.groupTextureOptions.Controls.Add(this.checkPullTextures);
+            this.groupTextureOptions.Controls.Add(this.checkConvertDds);
+            this.groupTextureOptions.Controls.Add(this.buttonTextureDir);
+            this.groupTextureOptions.Controls.Add(this.textTextureDir);
+            this.groupTextureOptions.Location = new System.Drawing.Point(12, 216);
+            this.groupTextureOptions.Name = "groupTextureOptions";
+            this.groupTextureOptions.Size = new System.Drawing.Size(480, 68);
+            this.groupTextureOptions.TabIndex = 12;
+            this.groupTextureOptions.TabStop = false;
+            this.groupTextureOptions.Text = "Texture Options";
+            // 
+            // checkPackPftxs
+            // 
+            this.checkPackPftxs.AutoSize = true;
+            this.checkPackPftxs.Location = new System.Drawing.Point(373, 19);
+            this.checkPackPftxs.Name = "checkPackPftxs";
+            this.checkPackPftxs.Size = new System.Drawing.Size(82, 17);
+            this.checkPackPftxs.TabIndex = 13;
+            this.checkPackPftxs.Text = "Pack _pftxs";
+            this.checkPackPftxs.UseVisualStyleBackColor = true;
+            // 
+            // checkPullTextures
+            // 
+            this.checkPullTextures.AutoSize = true;
+            this.checkPullTextures.Location = new System.Drawing.Point(6, 19);
+            this.checkPullTextures.Name = "checkPullTextures";
+            this.checkPullTextures.Size = new System.Drawing.Size(160, 17);
+            this.checkPullTextures.TabIndex = 16;
+            this.checkPullTextures.Text = "Pull Vanilla textures to _pftxs";
+            this.checkPullTextures.UseVisualStyleBackColor = true;
+            this.checkPullTextures.CheckedChanged += new System.EventHandler(this.checkPullTextures_CheckedChanged);
+            // 
+            // checkConvertDds
+            // 
+            this.checkConvertDds.AutoSize = true;
+            this.checkConvertDds.Location = new System.Drawing.Point(200, 19);
+            this.checkConvertDds.Name = "checkConvertDds";
+            this.checkConvertDds.Size = new System.Drawing.Size(121, 17);
+            this.checkConvertDds.TabIndex = 15;
+            this.checkConvertDds.Text = "Convert .dds to .ftex";
+            this.checkConvertDds.UseVisualStyleBackColor = true;
+            // 
+            // buttonTextureDir
+            // 
+            this.buttonTextureDir.Location = new System.Drawing.Point(348, 40);
+            this.buttonTextureDir.Name = "buttonTextureDir";
+            this.buttonTextureDir.Size = new System.Drawing.Size(126, 23);
+            this.buttonTextureDir.TabIndex = 14;
+            this.buttonTextureDir.Text = "Set Texture Directory...";
+            this.buttonTextureDir.UseVisualStyleBackColor = true;
+            this.buttonTextureDir.Click += new System.EventHandler(this.buttonTextureDir_Click);
+            // 
+            // textTextureDir
+            // 
+            this.textTextureDir.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.textTextureDir.Enabled = false;
+            this.textTextureDir.Location = new System.Drawing.Point(6, 42);
+            this.textTextureDir.Name = "textTextureDir";
+            this.textTextureDir.ReadOnly = true;
+            this.textTextureDir.Size = new System.Drawing.Size(336, 20);
+            this.textTextureDir.TabIndex = 13;
+            // 
+            // groupStructureOptions
+            // 
+            this.groupStructureOptions.Controls.Add(this.checkRefFile);
+            this.groupStructureOptions.Controls.Add(this.buttonRefFile);
+            this.groupStructureOptions.Controls.Add(this.textRefFile);
+            this.groupStructureOptions.Location = new System.Drawing.Point(12, 142);
+            this.groupStructureOptions.Name = "groupStructureOptions";
+            this.groupStructureOptions.Size = new System.Drawing.Size(480, 68);
+            this.groupStructureOptions.TabIndex = 13;
+            this.groupStructureOptions.TabStop = false;
+            this.groupStructureOptions.Text = "Structure Options";
+            // 
             // FormProliferator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(504, 207);
+            this.ClientSize = new System.Drawing.Size(504, 296);
+            this.Controls.Add(this.groupStructureOptions);
+            this.Controls.Add(this.groupTextureOptions);
             this.Controls.Add(this.labelOutDir);
             this.Controls.Add(this.buttonOutDir);
             this.Controls.Add(this.textOutDir);
-            this.Controls.Add(this.textRefFile);
-            this.Controls.Add(this.buttonRefFile);
-            this.Controls.Add(this.checkRefFile);
             this.Controls.Add(this.buttonProliferate);
             this.Controls.Add(this.labelFiles);
             this.Controls.Add(this.textFiles);
@@ -156,6 +241,10 @@
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "File Proliferator";
+            this.groupTextureOptions.ResumeLayout(false);
+            this.groupTextureOptions.PerformLayout();
+            this.groupStructureOptions.ResumeLayout(false);
+            this.groupStructureOptions.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -173,6 +262,13 @@
         private System.Windows.Forms.Label labelOutDir;
         private System.Windows.Forms.Button buttonOutDir;
         private System.Windows.Forms.TextBox textOutDir;
+        private System.Windows.Forms.GroupBox groupTextureOptions;
+        private System.Windows.Forms.CheckBox checkPackPftxs;
+        private System.Windows.Forms.CheckBox checkPullTextures;
+        private System.Windows.Forms.CheckBox checkConvertDds;
+        private System.Windows.Forms.Button buttonTextureDir;
+        private System.Windows.Forms.TextBox textTextureDir;
+        private System.Windows.Forms.GroupBox groupStructureOptions;
     }
 }
 

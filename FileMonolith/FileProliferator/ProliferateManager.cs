@@ -9,11 +9,11 @@ namespace FileProliferator
 {
     public class FeedbackEventArgs : EventArgs { public string Feedback { get; set; } }
 
-    public class ProliferateManager // todo: events and processing window,  + texture packing options
+    public class ProliferateManager
     {
-        public event EventHandler<FeedbackEventArgs> SendFeedback;
-
         public string[] TppFileList = File.ReadAllLines("TppMasterFileList.txt");
+
+        public event EventHandler<FeedbackEventArgs> SendFeedback;
 
         protected virtual void OnSendFeedback(string feedback)
         {
@@ -22,7 +22,7 @@ namespace FileProliferator
 
         public void DoProliferate(string[] filesToProlif, string outputPath)
         {
-            foreach(string fileToProlif in filesToProlif)
+            foreach (string fileToProlif in filesToProlif)
             {
                 string fileName = Path.GetFileName(fileToProlif);
                 List<string> foundDirectories = SearchDirectories(fileName);

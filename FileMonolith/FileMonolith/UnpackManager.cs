@@ -68,7 +68,7 @@ namespace ArchiveUnpacker
                 catch (ArgumentOutOfRangeException)
                 {
                     string filename = Path.GetFileName(filePath);
-                    MessageBox.Show(filename + " could not be unpacked.");
+                    MessageBox.Show(filename + " could not be unpacked.","Unpack Failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }

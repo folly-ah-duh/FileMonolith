@@ -52,9 +52,9 @@
             this.labelInDir.AutoSize = true;
             this.labelInDir.Location = new System.Drawing.Point(12, 9);
             this.labelInDir.Name = "labelInDir";
-            this.labelInDir.Size = new System.Drawing.Size(128, 13);
+            this.labelInDir.Size = new System.Drawing.Size(125, 13);
             this.labelInDir.TabIndex = 14;
-            this.labelInDir.Text = " Input Folder [.ftex/.ftexs]:";
+            this.labelInDir.Text = "Input Folder [.ftex/.ftexs]:";
             // 
             // buttonInDir
             // 

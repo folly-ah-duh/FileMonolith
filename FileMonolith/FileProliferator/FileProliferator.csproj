@@ -32,6 +32,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FtexTool">
+      <HintPath>..\..\..\..\..\Downloads\FtexTool-0.4.0\FtexTool-0.4.0\FtexTool\bin\Debug\FtexTool.dll</HintPath>
+    </Reference>
+    <Reference Include="GzsTool.Core">
+      <HintPath>..\..\..\..\..\Documents\Visual Studio 2015\Projects\GzsTool.v0.5.3.1b\GzsTool.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoPftxsTool\ArchiveHandler.cs" />
     <Compile Include="FolderSelectDialog\FolderSelectDialog.cs" />
     <Compile Include="FolderSelectDialog\Reflector.cs" />
     <Compile Include="FormProcessingProliferation.cs">
@@ -59,10 +66,11 @@
     <Compile Include="FormProliferator.Designer.cs">
       <DependentUpon>FormProliferator.cs</DependentUpon>
     </Compile>
-    <Compile Include="ProcessingWindow.cs" />
+    <Compile Include="ProcessingWindow\ProcessingWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProliferateManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TextureManager.cs" />
     <EmbeddedResource Include="FormProcessingProliferation.resx">
       <DependentUpon>FormProcessingProliferation.cs</DependentUpon>
     </EmbeddedResource>

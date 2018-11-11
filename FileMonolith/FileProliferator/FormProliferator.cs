@@ -1,15 +1,8 @@
 ﻿using FolderSelect;
+using ProcessWindow;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Environment;
 
 namespace FileProliferator
 {
@@ -20,6 +13,16 @@ namespace FileProliferator
             InitializeComponent();
             buttonRefFile.Enabled = false;
             checkRefFile.Checked = false;
+            buttonTextureDir.Enabled = false;
+            checkPullTextures.Checked = false;
+
+
+            if (!File.Exists("TppMasterFileList.txt"))
+            {
+                MessageBox.Show("TppMasterFile.txt is missing from the application folder. This tool cannot build directory structures without TppMasterFile.txt.", "Missing TppMasterFile.txt", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
         }
 
         private string[] selectedFilePaths { get; set; }
@@ -27,6 +30,8 @@ namespace FileProliferator
         private string referenceFileName { get; set; }
 
         private string outputDirectory { get; set; }
+
+        private string VanillaTexturesPath { get; set; }
 
         private void buttonFiles_Click(object sender, EventArgs e)
         {
@@ -67,7 +72,9 @@ namespace FileProliferator
         private void buttonOutDir_Click(object sender, EventArgs e)
         {
             FolderSelectDialog selectionDialog = new FolderSelectDialog();
-            selectionDialog.Title = "Choose a folder where the .dat files will unpack into. Making a new folder is highly recommended.";
+            selectionDialog.Title = "Choose a folder where the MakeBite structure will be built. Making a new folder is highly recommended.";
+            if (textOutDir.Text != null)
+                selectionDialog.InitialDirectory = textOutDir.Text;
             if (selectionDialog.ShowDialog() != true) return;
             string directoryPath = selectionDialog.FileName;
 
@@ -77,28 +84,71 @@ namespace FileProliferator
 
         private void buttonProliferate_Click(object sender, EventArgs e)
         {
+
+            if (!File.Exists("TppMasterFileList.txt"))
+            {
+                MessageBox.Show("TppMasterFile.txt is missing from the File Proliferator.exe folder.", "Missing TppMasterFile.txt", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (selectedFilePaths == null)
+            {
+                MessageBox.Show("Please choose file(s) to build directories for.", "No Files Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (outputDirectory == null)
+            {
+                MessageBox.Show("Please select an output folder.", "Missing Output Directory", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (checkRefFile.Checked && referenceFileName == null)
+            {
+                MessageBox.Show("Please select a Reference File.", "No Reference File Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (checkPullTextures.Checked && VanillaTexturesPath == null)
+            {
+                MessageBox.Show("Please set a Texture Directory.", "No Reference File Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             ProliferateManager Proliferator = new ProliferateManager();
             FormProcessingProliferation processWindow = new FormProcessingProliferation();
             Proliferator.SendFeedback += processWindow.OnSendFeedback;
-
-            if (selectedFilePaths != null)
-                if (outputDirectory != null)
-                    if (!checkRefFile.Checked)
-                    {
-                        ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { Proliferator.DoProliferate(selectedFilePaths, outputDirectory); }));
-                        MessageBox.Show("Done");
-                    }
-                    else if (checkRefFile.Checked && referenceFileName != null)
-                    {
-                        ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { Proliferator.DoProliferateFromReference(selectedFilePaths, outputDirectory, referenceFileName); }));
-                        MessageBox.Show("Done");
-                    }
-                    else
-                        MessageBox.Show("Please select a Reference File.");
-                else
-                    MessageBox.Show("Please select an output folder.");
+            
+            if (!checkRefFile.Checked)
+            {
+                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { Proliferator.DoProliferate(selectedFilePaths, outputDirectory); }));
+            }
             else
-                MessageBox.Show("Please choose file(s) to build directories for.");
+            {
+                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { Proliferator.DoProliferateFromReference(selectedFilePaths, outputDirectory, referenceFileName); }));
+            }
+
+            MessageBox.Show("Done!", "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+
+
+        private void checkPullTextures_CheckedChanged(object sender, EventArgs e)
+        {
+            buttonTextureDir.Enabled = checkPullTextures.Checked;
+        }
+
+        private void buttonTextureDir_Click(object sender, EventArgs e)
+        {
+            FolderSelectDialog selectionDialog = new FolderSelectDialog();
+            selectionDialog.Title = "Choose a folder where vanilla .ftex and .ftexs files can be copied from. The tool will search subfolders as well.";
+            if (textTextureDir.Text != null)
+                selectionDialog.InitialDirectory = textTextureDir.Text;
+            if (selectionDialog.ShowDialog() != true) return;
+            string directoryPath = selectionDialog.FileName;
+
+            VanillaTexturesPath = directoryPath;
+            textTextureDir.Text = directoryPath;
         }
     }
 }

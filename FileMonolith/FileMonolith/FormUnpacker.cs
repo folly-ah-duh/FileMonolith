@@ -1,4 +1,5 @@
 ﻿using FolderSelect;
+using ProcessWindow;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -45,6 +46,8 @@ namespace ArchiveUnpacker
         {
             FolderSelectDialog selectionDialog = new FolderSelectDialog();
             selectionDialog.Title = "Choose a folder where the .dat files will unpack into. Making a new folder is highly recommended.";
+            if (textOutDir.Text != null)
+                selectionDialog.InitialDirectory = textOutDir.Text;
             if (selectionDialog.ShowDialog() != true) return;
             string directoryPath = selectionDialog.FileName;
 
@@ -62,12 +65,12 @@ namespace ArchiveUnpacker
                 if (outputDir != null)
                 {
                     ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { archiveUnpacker.DoUnpack(archivePaths, outputDir, checkCondenseDir.Checked); }));
-                    MessageBox.Show("Done");
+                    MessageBox.Show("Done!","Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
-                    MessageBox.Show("Please select an output folder.");
+                    MessageBox.Show("Please select an output folder.", "Missing Output Directory", MessageBoxButtons.OK, MessageBoxIcon.Information);
             else
-                MessageBox.Show("Please choose which archives to unpack.");
+                MessageBox.Show("Please choose which archives to unpack.", "No Archives Selected", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

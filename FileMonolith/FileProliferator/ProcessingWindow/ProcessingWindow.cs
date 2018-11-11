@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace FileProliferator
+namespace ProcessWindow
 {
     public static class ProcessingWindow
     {
@@ -13,9 +13,9 @@ namespace FileProliferator
             processWorker.DoWork += (obj, var) => {
                 WorkerFunction();
             };
-            processWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(delegate (object sender, RunWorkerCompletedEventArgs e)
+            processWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(delegate (object sender, RunWorkerCompletedEventArgs e) 
             {
-                processWindow.Invoke((MethodInvoker)delegate
+                processWindow.Invoke((MethodInvoker)delegate 
                 {
                     processWindow.Close();
                 });

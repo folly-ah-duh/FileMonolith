@@ -41,7 +41,7 @@
             this.labelUnpack.Name = "labelUnpack";
             this.labelUnpack.Size = new System.Drawing.Size(306, 23);
             this.labelUnpack.TabIndex = 0;
-            this.labelUnpack.Text = "Building, please wait...";
+            this.labelUnpack.Text = "Unpacking, please wait...";
             this.labelUnpack.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // labelCurrentFile
@@ -65,7 +65,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(330, 98);
+            this.ClientSize = new System.Drawing.Size(326, 94);
             this.ControlBox = false;
             this.Controls.Add(this.pictureSpiral);
             this.Controls.Add(this.labelCurrentFile);
@@ -76,7 +76,6 @@
             this.MinimizeBox = false;
             this.Name = "FormProcessesingUnpack";
             this.ShowIcon = false;
-            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Processing...";
             ((System.ComponentModel.ISupportInitialize)(this.pictureSpiral)).EndInit();

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace ArchiveUnpacker
+namespace ProcessWindow
 {
     public static class ProcessingWindow
     {

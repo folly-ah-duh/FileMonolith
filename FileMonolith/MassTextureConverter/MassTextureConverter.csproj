@@ -57,10 +57,20 @@
     <Compile Include="FormMassTexConverter.Designer.cs">
       <DependentUpon>FormMassTexConverter.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormProcessingConversion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormProcessingConversion.Designer.cs">
+      <DependentUpon>FormProcessingConversion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProcessingWindow\ProcessingWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormMassTexConverter.resx">
       <DependentUpon>FormMassTexConverter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormProcessingConversion.resx">
+      <DependentUpon>FormProcessingConversion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
