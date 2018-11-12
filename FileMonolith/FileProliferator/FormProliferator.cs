@@ -82,6 +82,24 @@ namespace FileProliferator
             textOutDir.Text = directoryPath;
         }
 
+        private void checkPullTextures_CheckedChanged(object sender, EventArgs e)
+        {
+            buttonTextureDir.Enabled = checkPullTextures.Checked;
+        }
+
+        private void buttonTextureDir_Click(object sender, EventArgs e)
+        {
+            FolderSelectDialog selectionDialog = new FolderSelectDialog();
+            selectionDialog.Title = "Choose a folder where vanilla .ftex and .ftexs files can be copied from. The tool will search subfolders as well.";
+            if (textTextureDir.Text != null)
+                selectionDialog.InitialDirectory = textTextureDir.Text;
+            if (selectionDialog.ShowDialog() != true) return;
+            string directoryPath = selectionDialog.FileName;
+
+            VanillaTexturesPath = directoryPath;
+            textTextureDir.Text = directoryPath;
+        }
+
         private void buttonProliferate_Click(object sender, EventArgs e)
         {
 
@@ -115,40 +133,73 @@ namespace FileProliferator
                 return;
             }
 
-            ProliferateManager Proliferator = new ProliferateManager();
+            TextureManager textureManager = new TextureManager();
+            ProliferateManager proliferator = new ProliferateManager();
             FormProcessingProliferation processWindow = new FormProcessingProliferation();
-            Proliferator.SendFeedback += processWindow.OnSendFeedback;
-            
+            proliferator.SendFeedback += processWindow.OnSendFeedback;
+            textureManager.SendFeedback += processWindow.OnSendFeedback;
+
+            if (checkConvertDds.Checked)
+            {
+                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { selectedFilePaths = textureManager.convertDdsToFtex(selectedFilePaths); }));
+            }
+
+            int ddsConversionFailedCount = textureManager.getConversionFailedCount();
+            if (ddsConversionFailedCount > 0)
+            {
+                DialogResult dialogResult = MessageBox.Show(string.Format("There were {0} .dds file(s) that failed to convert to .ftex formatting. Unconverted .dds files will not be included in the Directory Structure.\n\nWould you still like to build the Directory Structure?", ddsConversionFailedCount), "Missing _pftxs Textures", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (dialogResult != DialogResult.Yes)
+                    return;
+            }
+
             if (!checkRefFile.Checked)
             {
-                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { Proliferator.DoProliferate(selectedFilePaths, outputDirectory); }));
+                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { proliferator.DoProliferate(selectedFilePaths, outputDirectory); }));
             }
             else
             {
-                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { Proliferator.DoProliferateFromReference(selectedFilePaths, outputDirectory, referenceFileName); }));
+                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { proliferator.DoProliferateFromReference(selectedFilePaths, outputDirectory, referenceFileName); }));
             }
 
-            MessageBox.Show("Done!", "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
+            if (checkPullTextures.Checked)
+            {
+                if (checkRefFile.Checked)
+                {
+                    ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { textureManager.PullVanillaTextures(outputDirectory, VanillaTexturesPath, referenceFileName); }));
+                }
+                else
+                {
+                    ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { textureManager.PullVanillaTextures(outputDirectory, VanillaTexturesPath, selectedFilePaths); }));
+                }
 
+            }
 
+            int texturePullsFailed = textureManager.getTextureNotFoundCount();
+            if (checkPackPftxs.Checked)
+            {
+                bool doPftxsPack = true;
 
-        private void checkPullTextures_CheckedChanged(object sender, EventArgs e)
-        {
-            buttonTextureDir.Enabled = checkPullTextures.Checked;
-        }
+                if(texturePullsFailed > 0)
+                {
+                    DialogResult dialogResult = MessageBox.Show(string.Format("There are {0} texture file(s) that could not be found in {1}. These textures were not pulled into the _pftxs folder(s).\n\nWould you still like to pack the _pftxs folders into .pftxs files?", texturePullsFailed, Path.GetFileName(VanillaTexturesPath)), "Missing _pftxs Textures", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    doPftxsPack = (dialogResult == DialogResult.Yes);
+                }
 
-        private void buttonTextureDir_Click(object sender, EventArgs e)
-        {
-            FolderSelectDialog selectionDialog = new FolderSelectDialog();
-            selectionDialog.Title = "Choose a folder where vanilla .ftex and .ftexs files can be copied from. The tool will search subfolders as well.";
-            if (textTextureDir.Text != null)
-                selectionDialog.InitialDirectory = textTextureDir.Text;
-            if (selectionDialog.ShowDialog() != true) return;
-            string directoryPath = selectionDialog.FileName;
+                if (doPftxsPack)
+                {
+                    ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { textureManager.PackPftxsFolders(outputDirectory); }));
+                }
+            }
 
-            VanillaTexturesPath = directoryPath;
-            textTextureDir.Text = directoryPath;
+            if (texturePullsFailed > 0)
+            {
+                MessageBox.Show(string.Format("Process Complete. There were {0} texture file(s) that could not be found in {1}.\n\nThese textures were not pulled into the _pftxs folder(s).", texturePullsFailed, Path.GetFileName(VanillaTexturesPath)), "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Done!", "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
         }
     }
 }

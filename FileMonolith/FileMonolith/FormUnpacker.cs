@@ -12,13 +12,12 @@ namespace ArchiveUnpacker
         public FormUnpacker()
         {
             InitializeComponent();
+            checkCondenseDir.Checked = true;
         }
 
         private string[] archivePaths { get; set; }
 
         private string outputDir { get; set; }
-
-        private bool condensed { get; set; }
 
         private void buttonArchives_Click(object sender, EventArgs e)
         {

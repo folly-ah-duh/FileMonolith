@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 
 namespace FileProliferator
 {
-    public class FeedbackEventArgs : EventArgs { public string Feedback { get; set; } }
-
     public class ProliferateManager
     {
-        public string[] TppFileList = File.ReadAllLines("TppMasterFileList.txt");
+        public static string[] TppFileList = File.ReadAllLines("TppMasterFileList.txt");
 
         public event EventHandler<FeedbackEventArgs> SendFeedback;
 
@@ -25,7 +23,7 @@ namespace FileProliferator
             foreach (string fileToProlif in filesToProlif)
             {
                 string fileName = Path.GetFileName(fileToProlif);
-                List<string> foundDirectories = SearchDirectories(fileName);
+                List<string> foundDirectories = SearchDirectoriesEndsWith(fileName);
 
                 if (foundDirectories.Count() == 0)
                     OnSendFeedback(string.Format("No results for {0}", fileName));
@@ -39,7 +37,7 @@ namespace FileProliferator
 
         public void DoProliferateFromReference(string[] filesToProlif, string outputPath, string referenceFile)
         {
-            List<string> foundDirectories = SearchDirectories(referenceFile);
+            List<string> foundDirectories = SearchDirectoriesEndsWith(referenceFile);
 
             if (foundDirectories.Count() == 0)
                 OnSendFeedback(string.Format("No results for {0}", referenceFile));
@@ -50,7 +48,7 @@ namespace FileProliferator
             }
         }
 
-        public List<string> SearchDirectories(string fileName)
+        private List<string> SearchDirectoriesEndsWith(string fileName)
         {
             List<string> foundDirectories = new List<string>();
 
@@ -60,7 +58,7 @@ namespace FileProliferator
             return foundDirectories;
         }
 
-        public void CopyFilesToDirectories(string outputPath, List<string> tppPaths, params string[] filepaths)
+        private void CopyFilesToDirectories(string outputPath, List<string> tppPaths, params string[] filepaths)
         {
             foreach (string tppPath in tppPaths)
             {
@@ -74,10 +72,5 @@ namespace FileProliferator
                 }
             }
         }
-
-        public void PackTextures() { }// Should I add an option to pull textures from vanilla pftxs and pack them with modified textures? 
-        // makebite/snakebite doesn't autofill pftxs files like it does with fpk/fpkd
-        // consider effect textures, the user would need to manually pack every pftxs
-        // honestly this is more of a problem with makebite/snakebite, but unless it gets an update I'll have to accomodate
     }
 }

@@ -15,7 +15,7 @@ namespace ArchiveUnpacker
 {
     public class FeedbackEventArgs : EventArgs { public string Feedback { get; set; } }
 
-    public class UnpackManager // todo texture conversion options and tppfilelist -> masterlist
+    public class UnpackManager
     {
         public event EventHandler<FeedbackEventArgs> SendFeedback;
 
@@ -29,7 +29,6 @@ namespace ArchiveUnpacker
             ReadDictionaries();
             UnpackQarArchives(archiveFilePaths, outputDir);
             UnpackChildArchives(outputDir, isCondensed);
-            // add option to convert ftex to dds?
         }
 
         private void ReadDictionaries()

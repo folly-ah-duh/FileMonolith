@@ -111,9 +111,9 @@
             this.checkCondenseDir.AutoSize = true;
             this.checkCondenseDir.Location = new System.Drawing.Point(12, 126);
             this.checkCondenseDir.Name = "checkCondenseDir";
-            this.checkCondenseDir.Size = new System.Drawing.Size(171, 17);
+            this.checkCondenseDir.Size = new System.Drawing.Size(354, 17);
             this.checkCondenseDir.TabIndex = 9;
-            this.checkCondenseDir.Text = "Condensed Directory Structure";
+            this.checkCondenseDir.Text = "Condensed Directory Structure [Required for Mass Texture Converter]";
             this.checkCondenseDir.UseVisualStyleBackColor = true;
             // 
             // FormUnpacker

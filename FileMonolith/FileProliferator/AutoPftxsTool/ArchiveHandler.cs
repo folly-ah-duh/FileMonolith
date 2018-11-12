@@ -47,33 +47,34 @@ namespace FileProliferator.AutoPftxsTool
         {
             PftxsFile p = new PftxsFile() { Name = FileName };
             string[] files = Directory.GetFiles(SourceDirectory, "*", SearchOption.AllDirectories);
-
             for (int i = 0; i < files.Length; i++)
             {
                 files[i] = files[i].Replace(SourceDirectory, "").Replace("\\", "/");
                 string pathString = "\\";
-
                 //if it exists in the source directory, not a sub-directory, remove the '/'.
                 if (File.Exists(SourceDirectory + "\\" + Path.GetFileName(files[i])))
                 {
                     files[i] = files[i].Substring(1);
                     pathString = "";
                 } //if ends
-
                 if (Path.GetExtension(files[i]) == ".ftex")
                 {
                     //Console.WriteLine(files[i]);
                     string nameWithoutExtension = Path.GetFileNameWithoutExtension(files[i]);
-
                     PftxsFtexFile pf = new PftxsFtexFile();
                     PftxsFtexsFileEntry pfe = new PftxsFtexsFileEntry() { FilePath = files[i] };
-                    PftxsFtexsFileEntry pfe1 = new PftxsFtexsFileEntry() { FilePath = Path.GetDirectoryName(files[i]) + pathString + nameWithoutExtension + ".1.ftexs" };
                     pf.Entries = new List<PftxsFtexsFileEntry>(0);
                     pf.Entries.Add(pfe);
-                    pf.Entries.Add(pfe1);
 
-                    Console.WriteLine(SourceDirectory + "\\" + Path.GetDirectoryName(files[i]) + pathString + nameWithoutExtension + ".2.ftexs");
-
+                    if (File.Exists(SourceDirectory + "\\" + Path.GetDirectoryName(files[i]) + pathString + nameWithoutExtension + ".1.ftexs"))
+                    {
+                        PftxsFtexsFileEntry pfe1 = new PftxsFtexsFileEntry() { FilePath = Path.GetDirectoryName(files[i]) + pathString + nameWithoutExtension + ".1.ftexs" };
+                        pf.Entries.Add(pfe1);
+                    } else
+                    {
+                        Console.WriteLine(".1.ftexs not found, likely problematic!");
+                    }
+                    //Console.WriteLine(SourceDirectory + "\\" + Path.GetDirectoryName(files[i]) + pathString + nameWithoutExtension + ".2.ftexs");
                     if (File.Exists(SourceDirectory + "\\" + Path.GetDirectoryName(files[i]) + pathString + nameWithoutExtension + ".2.ftexs"))
                     {
                         PftxsFtexsFileEntry pfe2 = new PftxsFtexsFileEntry() { FilePath = Path.GetDirectoryName(files[i]) + pathString + nameWithoutExtension + ".2.ftexs" };
@@ -103,11 +104,9 @@ namespace FileProliferator.AutoPftxsTool
                         PftxsFtexsFileEntry pfe2 = new PftxsFtexsFileEntry() { FilePath = Path.GetDirectoryName(files[i]) + pathString + nameWithoutExtension + ".6.ftexs" };
                         pf.Entries.Add(pfe2);
                     } //if ends
-
                     p.Files.Add(pf);
                 } //if ends
             } //foreach ends
-
             using (FileStream outFile = new FileStream(FileName, FileMode.Create))
             {
                 IDirectory fileDirectory = new FileSystemDirectory(SourceDirectory);
