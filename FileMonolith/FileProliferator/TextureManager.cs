@@ -55,57 +55,47 @@ namespace FileProliferator
             return newFilePaths.ToArray();
         }
 
-        public void PackPftxsFolders(string directoryPath)
-        {
-            string[] allPftxsDirPaths = Directory.GetDirectories(directoryPath, "*_pftxs", SearchOption.AllDirectories);
-            foreach(string pftxsDirPath in allPftxsDirPaths)
-            {
-                string pftxsFileName = Path.GetFileName(pftxsDirPath).Replace("_pftxs", ".pftxs");
-                string pftxsFilePath = Path.Combine(Path.GetDirectoryName(pftxsDirPath), pftxsFileName);
-
-                OnSendFeedback("Packing: " + pftxsFileName);
-                try
-                {
-                    AutoPftxsTool.ArchiveHandler.WritePftxsArchive(pftxsFilePath, pftxsDirPath);
-
-                    if (File.Exists(pftxsFilePath))
-                    {
-                        DeleteDirectory(pftxsDirPath);
-                    }
-                }
-                catch (FileNotFoundException)
-                {
-                    Console.WriteLine("IO EXCPEITON");
-                }
-            }
-        }
-
         internal void PullVanillaTextures(string outputDirectory, string vanillaTexturesPath, params string[] inputFilePaths)
         {
-            List<string> pftxsPaths = new List<string>();
-            foreach (string inputFilePath in inputFilePaths)
+            //List<string> pftxsPaths = new List<string>();
+            List<string> inputTextureNames = new List<string>();
+            foreach (string inputFilePath in inputFilePaths) // every selected file from the user
             {
                 string fileName = Path.GetFileName(inputFilePath);
-                foreach (string ProliferatePath in SearchDirectoriesEndsWith(fileName))
+                if (fileName.EndsWith(".ftex") || fileName.EndsWith(".ftexs"))
+                {
+                    inputTextureNames.Add(GetTextureName(fileName));
+                }
+                /*
+                else
+                {
+                    continue;
+                }
+                foreach (string ProliferatePath in SearchDirectoriesEndsWith(fileName)) // every tpplist line that mentions selected file from the user
                 {
                     if (ProliferatePath.Contains("_pftxs"))
                     {
-                        int pftxsPathLength = ProliferatePath.IndexOf("_pftxs") + 6; //big big abrain
+                        int pftxsPathLength = ProliferatePath.IndexOf("_pftxs") + 6;
                         string pftxsPath = ProliferatePath.Substring(0, pftxsPathLength);
                         if (!pftxsPaths.Contains(pftxsPath))
                         {
-                            pftxsPaths.Add(pftxsPath);
+                            pftxsPaths.Add(pftxsPath); // every pftxs folder of every selected file from the user... weren't these made when the user did proliferatefile? 
                         }
                     }
                 }
+                */
             }
+            string[] pftxsPaths = Directory.GetDirectories(outputDirectory, "*_pftxs", SearchOption.AllDirectories); //much more efficient I think
             foreach (string pftxsPath in pftxsPaths)
             {
                 OnSendFeedback("Pulling Textures: " + Path.GetFileName(pftxsPath));
-                List<string> TppListedTexturePaths = SearchPathsContaining(pftxsPath); //oof but necessary?
+                List<string> TppListedTexturePaths = SearchPathsContaining(pftxsPath);
                 foreach (string TppListedTexturePath in TppListedTexturePaths)
                 {
                     string textureFilename = Path.GetFileName(TppListedTexturePath);
+                    if (inputTextureNames.Contains(GetTextureName(textureFilename))) {
+                        continue;
+                    }
                     string textureTppListedDirPath = Path.GetDirectoryName(TppListedTexturePath);
 
                     string foundTexturePath = findTexturePath(vanillaTexturesPath, pftxsPath, TppListedTexturePath);
@@ -121,6 +111,7 @@ namespace FileProliferator
                         string newFilePath = Path.Combine(outputDirectory, TppListedTexturePath);
                         if(!File.Exists(newFilePath))
                         {
+
                             File.Copy(foundTexturePath, newFilePath);
                         }
                     }
@@ -131,19 +122,20 @@ namespace FileProliferator
                 }
             }
         }
+
         private string findTexturePath(string vanillaTexturesPath, string pftxsPath, string TppListedTexturePath)
         {
-            string expectedTexturePath = Path.Combine(vanillaTexturesPath, TppListedTexturePath); //Expected path if textures were unpacked with Archive Unpacker
-            if (File.Exists(expectedTexturePath))
-            {
-                return expectedTexturePath;
-            }
-
             string condensedTexturePath = (TppListedTexturePath.Remove(0, pftxsPath.Length + 1)); //Expected path if textures were unpacked with Archive Unpacker's Condensed Directory Structure
             condensedTexturePath = Path.Combine(vanillaTexturesPath, condensedTexturePath);
             if (File.Exists(condensedTexturePath))
             {
                 return condensedTexturePath;
+            }
+
+            string LongTexturePath = Path.Combine(vanillaTexturesPath, TppListedTexturePath); //Expected path if textures were unpacked with Archive Unpacker
+            if (File.Exists(LongTexturePath))
+            {
+                return LongTexturePath;
             }
 
             string textureFileName = Path.GetFileName(TppListedTexturePath);
@@ -157,8 +149,43 @@ namespace FileProliferator
                 return null;
             }
         }
+        
+        public void PackPftxsFolders(string directoryPath)
+        {
+            string[] allPftxsDirPaths = Directory.GetDirectories(directoryPath, "*_pftxs", SearchOption.AllDirectories);
+            foreach (string pftxsDirPath in allPftxsDirPaths)
+            {
+                string pftxsFileName = Path.GetFileName(pftxsDirPath).Replace("_pftxs", ".pftxs");
+                string pftxsFilePath = Path.Combine(Path.GetDirectoryName(pftxsDirPath), pftxsFileName);
 
-        public static void DeleteDirectory(string dir)
+                OnSendFeedback("Packing: " + pftxsFileName);
+                AutoPftxsTool.ArchiveHandler.WritePftxsArchive(pftxsFilePath, pftxsDirPath);
+
+                if (File.Exists(pftxsFilePath))
+                {
+                    DeleteDirectory(pftxsDirPath);
+                }
+            }
+        }
+
+        public void DeletePftxsFolders(string directoryPath)
+        {
+            string[] allPftxsDirPaths = Directory.GetDirectories(directoryPath, "*_pftxs", SearchOption.AllDirectories);
+            foreach (string pftxsDirPath in allPftxsDirPaths)
+            {
+                string pftxsFileName = Path.GetFileName(pftxsDirPath).Replace("_pftxs", ".pftxs");
+                string DirName = Path.GetDirectoryName(pftxsDirPath);
+                string pftxsFilePath = Path.Combine(DirName, pftxsFileName);
+
+                if (File.Exists(pftxsFilePath))
+                {
+                    OnSendFeedback("Deleting: " + DirName);
+                    DeleteDirectory(pftxsDirPath);
+                }
+            }
+        }
+
+        private void DeleteDirectory(string dir)
         {
             foreach (string directory in Directory.GetDirectories(dir))
             {
@@ -185,7 +212,7 @@ namespace FileProliferator
 
             foreach (string TppFile in TppFileList)
             {
-                if (TppFile.Contains(fileName))
+                if (TppFile.EndsWith(fileName))
                 {
                     foundDirectories.Add(Path.GetDirectoryName(TppFile));
                 }
@@ -205,6 +232,23 @@ namespace FileProliferator
                 }
             }
             return foundFiles;
+        }
+
+        private string GetTextureName(string FileNameWithExtension)
+        {
+            if (FileNameWithExtension.EndsWith(".ftex"))
+            {
+                return Path.GetFileNameWithoutExtension(FileNameWithExtension);
+            } else
+            {
+                string ftexNameDotNumber = Path.GetFileNameWithoutExtension(FileNameWithExtension);
+                return ftexNameDotNumber.Remove(ftexNameDotNumber.Length - 2);
+            }
+        }
+
+        public int getPftxsDirCount(string directoryPath)
+        {
+            return Directory.GetDirectories(directoryPath, "*_pftxs", SearchOption.AllDirectories).Length;
         }
 
         public int getConversionFailedCount()

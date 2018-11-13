@@ -163,7 +163,7 @@ namespace FileProliferator
 
             if (checkPullTextures.Checked)
             {
-                if (checkRefFile.Checked)
+                if (checkRefFile.Checked) //todo needs a "pull to root of reference file's pack" sort of option for this to be viable
                 {
                     ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { textureManager.PullVanillaTextures(outputDirectory, VanillaTexturesPath, referenceFileName); }));
                 }
@@ -175,7 +175,7 @@ namespace FileProliferator
             }
 
             int texturePullsFailed = textureManager.getTextureNotFoundCount();
-            if (checkPackPftxs.Checked)
+            if (checkPackPftxs.Checked && textureManager.getPftxsDirCount(outputDirectory) > 0)
             {
                 bool doPftxsPack = true;
 
@@ -188,6 +188,11 @@ namespace FileProliferator
                 if (doPftxsPack)
                 {
                     ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { textureManager.PackPftxsFolders(outputDirectory); }));
+                    DialogResult dialogResult = MessageBox.Show("The _pftxs folders have been packed into .pftxs files.\n\nWould you like to delete the leftover _pftxs folders?", "Delete _pftxs Folders?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { textureManager.DeletePftxsFolders(outputDirectory); }));
+                    }
                 }
             }
 

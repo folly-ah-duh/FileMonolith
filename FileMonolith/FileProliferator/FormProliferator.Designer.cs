@@ -173,16 +173,16 @@
             this.checkPullTextures.AutoSize = true;
             this.checkPullTextures.Location = new System.Drawing.Point(6, 19);
             this.checkPullTextures.Name = "checkPullTextures";
-            this.checkPullTextures.Size = new System.Drawing.Size(160, 17);
+            this.checkPullTextures.Size = new System.Drawing.Size(176, 17);
             this.checkPullTextures.TabIndex = 16;
-            this.checkPullTextures.Text = "Pull Vanilla textures to _pftxs";
+            this.checkPullTextures.Text = "Pull Vanilla .ftex | .ftexs to _pftxs";
             this.checkPullTextures.UseVisualStyleBackColor = true;
             this.checkPullTextures.CheckedChanged += new System.EventHandler(this.checkPullTextures_CheckedChanged);
             // 
             // checkConvertDds
             // 
             this.checkConvertDds.AutoSize = true;
-            this.checkConvertDds.Location = new System.Drawing.Point(200, 19);
+            this.checkConvertDds.Location = new System.Drawing.Point(213, 19);
             this.checkConvertDds.Name = "checkConvertDds";
             this.checkConvertDds.Size = new System.Drawing.Size(121, 17);
             this.checkConvertDds.TabIndex = 15;

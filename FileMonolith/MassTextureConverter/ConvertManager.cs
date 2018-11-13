@@ -22,30 +22,21 @@ namespace MassTextureConverter
 
         public void DoMassConversion(string inputDirectory, string outputDirectory, bool subFolders)
         {
-            string[] ftexFiles = GetFtexFiles(inputDirectory, subFolders);
-            ConvertTextures(ftexFiles, inputDirectory, outputDirectory);
+            ConvertTextures(inputDirectory, subFolders, outputDirectory);
         }
 
-        private string[] GetFtexFiles(string searchDirectory, bool searchSubFolders)
-        {
-            OnSendFeedback("Finding .ftex files...");
-
-            string[] ftexFiles;
-
-            if (searchSubFolders)
-                ftexFiles = Directory.GetFiles(searchDirectory, "*.ftex", SearchOption.AllDirectories);
-            else
-                ftexFiles = Directory.GetFiles(searchDirectory, "*.ftex", SearchOption.TopDirectoryOnly);
-
-            return ftexFiles;
-        }
-
-        private void ConvertTextures(string[] filePaths, string inputRootDir, string outputRootDir)
+        private void ConvertTextures(string inputRootDir, bool searchSubFolders, string outputRootDir)
         {
             int numRemoveRootDir = inputRootDir.Length + 1;
-            foreach (string ftexFilePath in filePaths)
+            SearchOption searchOpt = new SearchOption();
+            if (searchSubFolders)
+                searchOpt = SearchOption.AllDirectories;
+            else
+                searchOpt = SearchOption.TopDirectoryOnly;
+
+            foreach (var ftexFileInfo in new DirectoryInfo(inputRootDir).EnumerateFiles("*.ftex", searchOpt))
             {
-                string ddsOutputDir = ftexFilePath.Remove(0, numRemoveRootDir);
+                string ddsOutputDir = ftexFileInfo.FullName.Remove(0, numRemoveRootDir);
 
                 OnSendFeedback(ddsOutputDir);
 
@@ -57,13 +48,14 @@ namespace MassTextureConverter
 
                 try
                 {
-                    FtexTool.Program.UnpackFtexFile(ftexFilePath, ddsOutputDir);
-                } 
+                    //string[] ftexArgs = { ftexFileInfo.FullName, ddsOutputDir }; Same outcome, but using UnpackFtexFile directly saves on processing. UnpackFtexFile is private by default, so I made it public in the dll I'm using.
+                    //FtexTool.Program.Main(ftexArgs);
+                    FtexTool.Program.UnpackFtexFile(ftexFileInfo.FullName, ddsOutputDir);
+                }
                 catch (FtexTool.Exceptions.MissingFtexsFileException)
                 {
                     conversionFailedCount++;
                 }
-
             }
         }
 

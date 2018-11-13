@@ -33,6 +33,7 @@ namespace FileProliferator
                     CopyFilesToDirectories(outputPath, foundDirectories, fileToProlif);
                 }
             }
+            ProliferateExtraFtexs(filesToProlif, outputPath);
         }
 
         public void DoProliferateFromReference(string[] filesToProlif, string outputPath, string referenceFile)
@@ -48,6 +49,40 @@ namespace FileProliferator
             }
         }
 
+        private void ProliferateExtraFtexs(string[] filesToProlif, string outputPath)  // Edge case: If the user has more ftexs files than the vanilla texture, this needs to proliferate the extras (but not into pftxs folders).
+        {
+            foreach (string fileToProlif in filesToProlif)
+            {
+                if (fileToProlif.EndsWith(".ftex"))
+                {
+                    List<string> ftexsFilePaths = new List<string>();
+                    string textureName = Path.GetFileNameWithoutExtension(fileToProlif);
+                    List<string> TppPathsFtexNoPftxs = SearchDirectoriesNoPftxsEndsWith(Path.GetFileName(fileToProlif));
+
+                    for (int i = 1; i <= 6; i++) // .1.ftexs through .6.ftexs
+                    {
+                        string ftexsFileName = string.Format("{0}.{1}.ftexs", textureName, i);
+                        string ftexsFilePath = Path.Combine(fileToProlif, ftexsFileName);
+                        if (filesToProlif.Contains(ftexsFilePath))
+                        {
+                            Console.WriteLine("an ftexs file for the ftex is contained in filestoprolif");
+                            if (!ftexsFilePaths.Contains(ftexsFileName))
+                            {
+                                ftexsFilePaths.Add(ftexsFilePath);
+                            }
+                        }
+                    }
+                    foreach(string ftexsFilePath in ftexsFilePaths)
+                    {
+                        if (SearchDirectoriesEndsWith(ftexsFilePath).Count == 0) // an ftexs file that the user is trying to proliferate does not exist in the vanilla files (their texture has more ftexs than the vanilla texture)
+                        {
+                            CopyFilesToDirectories(outputPath, TppPathsFtexNoPftxs, ftexsFilePath);
+                        }
+                    }
+                }
+            }
+        }
+
         private List<string> SearchDirectoriesEndsWith(string fileName)
         {
             List<string> foundDirectories = new List<string>();
@@ -55,6 +90,17 @@ namespace FileProliferator
             foreach (string TppFile in TppFileList)
                 if (TppFile.EndsWith(fileName))
                     foundDirectories.Add(Path.GetDirectoryName(TppFile));
+            return foundDirectories;
+        }
+
+        private List<string> SearchDirectoriesNoPftxsEndsWith(string fileName)
+        {
+            List<string> foundDirectories = new List<string>();
+
+            foreach (string TppFile in TppFileList)
+                if (TppFile.EndsWith(fileName))
+                    if (!TppFile.Contains("_pftxs"))
+                        foundDirectories.Add(Path.GetDirectoryName(TppFile));
             return foundDirectories;
         }
 
