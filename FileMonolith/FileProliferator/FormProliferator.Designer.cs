@@ -45,6 +45,7 @@
             this.buttonTextureDir = new System.Windows.Forms.Button();
             this.textTextureDir = new System.Windows.Forms.TextBox();
             this.groupStructureOptions = new System.Windows.Forms.GroupBox();
+            this.checkSetRefRoot = new System.Windows.Forms.CheckBox();
             this.groupTextureOptions.SuspendLayout();
             this.groupStructureOptions.SuspendLayout();
             this.SuspendLayout();
@@ -91,9 +92,9 @@
             this.checkRefFile.AutoSize = true;
             this.checkRefFile.Location = new System.Drawing.Point(6, 19);
             this.checkRefFile.Name = "checkRefFile";
-            this.checkRefFile.Size = new System.Drawing.Size(334, 17);
+            this.checkRefFile.Size = new System.Drawing.Size(322, 17);
             this.checkRefFile.TabIndex = 4;
-            this.checkRefFile.Text = "Use Reference File (Copy files to anywhere that contains this file):";
+            this.checkRefFile.Text = "Use Reference File (Copy files anywhere that contains this file):";
             this.checkRefFile.UseVisualStyleBackColor = true;
             this.checkRefFile.CheckedChanged += new System.EventHandler(this.checkRefFile_CheckedChanged);
             // 
@@ -211,6 +212,7 @@
             // 
             // groupStructureOptions
             // 
+            this.groupStructureOptions.Controls.Add(this.checkSetRefRoot);
             this.groupStructureOptions.Controls.Add(this.checkRefFile);
             this.groupStructureOptions.Controls.Add(this.buttonRefFile);
             this.groupStructureOptions.Controls.Add(this.textRefFile);
@@ -220,6 +222,16 @@
             this.groupStructureOptions.TabIndex = 13;
             this.groupStructureOptions.TabStop = false;
             this.groupStructureOptions.Text = "Structure Options";
+            // 
+            // checkSetRefRoot
+            // 
+            this.checkSetRefRoot.AutoSize = true;
+            this.checkSetRefRoot.Location = new System.Drawing.Point(350, 19);
+            this.checkSetRefRoot.Name = "checkSetRefRoot";
+            this.checkSetRefRoot.Size = new System.Drawing.Size(124, 17);
+            this.checkSetRefRoot.TabIndex = 7;
+            this.checkSetRefRoot.Text = "Set in Root of Packs";
+            this.checkSetRefRoot.UseVisualStyleBackColor = true;
             // 
             // FormProliferator
             // 
@@ -269,6 +281,7 @@
         private System.Windows.Forms.Button buttonTextureDir;
         private System.Windows.Forms.TextBox textTextureDir;
         private System.Windows.Forms.GroupBox groupStructureOptions;
+        private System.Windows.Forms.CheckBox checkSetRefRoot;
     }
 }
 

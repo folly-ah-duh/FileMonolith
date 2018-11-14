@@ -15,6 +15,8 @@ namespace FileProliferator
             checkRefFile.Checked = false;
             buttonTextureDir.Enabled = false;
             checkPullTextures.Checked = false;
+            checkSetRefRoot.Checked = true;
+            checkSetRefRoot.Enabled = false;
 
 
             if (!File.Exists("TppMasterFileList.txt"))
@@ -55,6 +57,7 @@ namespace FileProliferator
         private void checkRefFile_CheckedChanged(object sender, EventArgs e)
         {
             buttonRefFile.Enabled = checkRefFile.Checked;
+            checkSetRefRoot.Enabled = checkRefFile.Checked;
         }
 
         private void buttonRefFile_Click(object sender, EventArgs e)
@@ -158,12 +161,12 @@ namespace FileProliferator
             }
             else
             {
-                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { proliferator.DoProliferateFromReference(selectedFilePaths, outputDirectory, referenceFileName); }));
+                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { proliferator.DoProliferateFromReference(selectedFilePaths, outputDirectory, checkSetRefRoot.Checked, referenceFileName); }));
             }
 
             if (checkPullTextures.Checked)
             {
-                if (checkRefFile.Checked) //todo needs a "pull to root of reference file's pack" sort of option for this to be viable
+                if (checkRefFile.Checked)
                 {
                     ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { textureManager.PullVanillaTextures(outputDirectory, VanillaTexturesPath, referenceFileName); }));
                 }

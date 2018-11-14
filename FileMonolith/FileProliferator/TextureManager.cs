@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FtexTool;
 using System.IO;
 
 namespace FileProliferator
@@ -88,8 +85,8 @@ namespace FileProliferator
             string[] pftxsPaths = Directory.GetDirectories(outputDirectory, "*_pftxs", SearchOption.AllDirectories); //much more efficient I think
             foreach (string pftxsPath in pftxsPaths)
             {
-                OnSendFeedback("Pulling Textures: " + Path.GetFileName(pftxsPath));
-                List<string> TppListedTexturePaths = SearchPathsContaining(pftxsPath);
+                string pftxsName = Path.GetFileName(pftxsPath);
+                List<string> TppListedTexturePaths = SearchPathsContaining(pftxsName);
                 foreach (string TppListedTexturePath in TppListedTexturePaths)
                 {
                     string textureFilename = Path.GetFileName(TppListedTexturePath);
@@ -97,7 +94,7 @@ namespace FileProliferator
                         continue;
                     }
                     string textureTppListedDirPath = Path.GetDirectoryName(TppListedTexturePath);
-
+                    OnSendFeedback(string.Format("Pulling {0}", Path.GetFileName(TppListedTexturePath)));
                     string foundTexturePath = findTexturePath(vanillaTexturesPath, pftxsPath, TppListedTexturePath);
                     if (foundTexturePath != null)
                     {
@@ -111,7 +108,6 @@ namespace FileProliferator
                         string newFilePath = Path.Combine(outputDirectory, TppListedTexturePath);
                         if(!File.Exists(newFilePath))
                         {
-
                             File.Copy(foundTexturePath, newFilePath);
                         }
                     }
