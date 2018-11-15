@@ -72,19 +72,19 @@ namespace ArchiveUnpacker
             }
         }
 
-        public void UnpackChildArchives(string rootDir, bool moveToRoot) // note: archives preexisting in the rootDir will be read. Unintended functionality, not sure whether to change it.
+        public void UnpackChildArchives(string rootDir, bool moveToRoot) // note: archives preexisting in the rootDir will be read. This could potentially lead to the unhashed and the hashed filenames both getting listed to TppGeneratedFileList
         {
-            File.Delete("TppFileList.txt"); // TppFileList.txt should live with the .exe's and a TppMasterFileList.txt, so that the user can swap out the master file list
-
-            string[] archiveFiles = Directory.GetFiles(rootDir, "*", SearchOption.AllDirectories);
+            File.Delete("TppGeneratedFileList.txt"); // TppGeneratedFileList.txt should live with the .exe's and a TppMasterFileList.txt, so that the user can swap out the master file list
             List<string> ChildPaths;
 
-            using (StreamWriter TppFileList = File.CreateText("TppFileList.txt"))
+            using (StreamWriter TppFileList = File.CreateText("TppGeneratedFileList.txt"))
             {
                 if (moveToRoot)
-                    foreach (string filePath in archiveFiles)
+                {
+                    foreach (var fileInfo in new DirectoryInfo(rootDir).EnumerateFiles("*", SearchOption.AllDirectories))
                     {
-                        TppFileList.WriteLine(filePath.Remove(0, rootDir.Length + 1));  // +1 to get rid of the '/' at the beginning
+                        string filePath = fileInfo.FullName;
+                        TppFileList.WriteLine(filePath.Remove(0, rootDir.Length + 1));
 
                         string extension = Path.GetExtension(filePath).Replace(".", "");
 
@@ -114,9 +114,11 @@ namespace ArchiveUnpacker
                                 break;
                         }
                     }
-                else
-                    foreach (string filePath in archiveFiles)
+                }
+                else // duplicate code here, because I can save on a tiny bit of processing by moving the moveToRoot conditional outside of the foreach loop.
+                    foreach (var fileInfo in new DirectoryInfo(rootDir).EnumerateFiles("*", SearchOption.AllDirectories))
                     {
+                        string filePath = fileInfo.FullName;
                         TppFileList.WriteLine(filePath.Remove(0, rootDir.Length + 1));
 
                         string extension = Path.GetExtension(filePath).Replace(".", "");
