@@ -21,7 +21,7 @@ namespace FileProliferator
 
             if (!File.Exists("TppMasterFileList.txt"))
             {
-                MessageBox.Show("TppMasterFile.txt is missing from the application folder. This tool cannot build directory structures without TppMasterFile.txt.", "Missing TppMasterFile.txt", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("TppMasterFileList.txt is missing from the application folder. This tool cannot build directory structures without TppMasterFileList.txt.", "Missing TppMasterFileList.txt", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -108,7 +108,7 @@ namespace FileProliferator
 
             if (!File.Exists("TppMasterFileList.txt"))
             {
-                MessageBox.Show("TppMasterFile.txt is missing from the File Proliferator.exe folder.", "Missing TppMasterFile.txt", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("TppMasterFileList.txt is missing from the File Proliferator.exe folder.", "Missing TppMasterFileList.txt", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

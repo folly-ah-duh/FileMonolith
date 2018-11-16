@@ -113,6 +113,8 @@ namespace FileProliferator
                 {
                     OnSendFeedback("Confirming .ftexs count...");
                     string TppCondensedDir = FindCondensedDir(Path.GetFileName(fileToProlif));
+                    if (TppCondensedDir == null)
+                        continue;
                     string textureName = Path.GetFileNameWithoutExtension(fileToProlif);
                     string textureDir = Path.GetDirectoryName(fileToProlif);
 
@@ -177,7 +179,7 @@ namespace FileProliferator
                         return Path.GetDirectoryName(TppFile);
                     }
                 }
-            return "";
+            return null;
         }
 
         private void CopyFilesToDirectories(string outputPath, List<string> tppPaths, params string[] filepaths)

@@ -1,12 +1,12 @@
-# FileMonolith
+# File Monolith
 
-File Monolith is a set of file management tools for MGSV: Archive Unpacker, File Proliferator and Mass Texture Converter. The goal of these tools is to improve accessibility for MGSV modding.
+File Monolith is a set of file management tools for Metal Gear Solid V. The goal of these tools is to improve accessibility for MGSV modding.
 
 ## Tools Overview
 
-* **Archive Unpacker**: The user may select Archive (.dat) files, which the tool will unpack into a target directory. Then, the tool will unpack all .fkp, .fpkd, .pftxs, and .sbp files within the directory.
-* **Mass Texture Converter**: The user may select a directory, and the tool will attempt to convert all texture files from .ftex(s) to .dds. The resulting .dds files are sent to a target directory.
-* **File Proliferator**: The user selects any number of files, of any type. The tool will search for these files in the MGSV file structure. If these filenames are found in the game files, the tool creates a directory structure to mirror MGSV's, and then copies the user's files into the structure.
+* **Archive Unpacker**: The user can select Archive (.dat) files, which the tool will unpack into a target directory. Then, the tool will unpack all .fkp, .fpkd, .pftxs, and .sbp files within the directory.
+* **Mass Texture Converter**: The user can select a directory and the tool will attempt to convert all texture files from .ftex(s) to .dds. The resulting .dds files are sent to a target directory.
+* **File Proliferator**: The user selects any number of files, of any type. The tool will search for these files in the MGSV file structure. If these filenames are found in the game files, the tool creates a directory structure to mirror MGSV's and then copies the user's files into the structure.
 
 ## Archive Unpacker
 
@@ -14,7 +14,7 @@ The Archive Unpacker is a simple tool which unpacks user-specified .dat files, a
 This tool has three purposes:
 1. To provide the user with a "monolithic" view of MGSV's files, assuming the user chooses to unpack all .dat files.
 2. To provide Mass Texture Converter with .ftex(s) files.
-3. To provide File Proliferator with a TppMasterFileList.txt (pre-included in the download) and a texture directory (for pulling vanilla .ftex(s) files into _pftxs folders).
+3. To provide File Proliferator with file lists (TppMasterFileList.txt is pre-included in the download) and a texture directory (for pulling vanilla .ftex(s) files into _pftxs folders).
 
 Notes:
 * Unpacking all .dat files will take a while. 
@@ -43,14 +43,14 @@ Notes:
 
 ## File Proliferator
 
-The File Proliferator tool is the most powerful and feature-rich tool of the three. Although it has a number of use-cases and functions, its primary role is to create MakeBite-read file directories for MGSV. From the files input by the user, this tool will search through the entirety of MGSV's files (including the contents of .fpk, .fpkd, .pftxs and .sbp files) for a matching filename. Upon finding a match, the tool will create a mimic of the file's directory structure in the target directory, and then place a copy of the user's file into that directory. In essence, this "proliferates" the user's files into the MakeBite structure, ready to be packed into a .mgsv file.
+The File Proliferator tool is the most powerful and feature-rich tool of the three. Although it has a number of use-cases and functions, its primary role is to create MakeBite-ready file directories for MGSV. From the files input by the user, this tool will search through the entirety of MGSV's files (including the contents of .fpk, .fpkd, .pftxs and .sbp files) for a matching filename. Upon finding a match, the tool will create a mimic of the file's directory structure in the target directory, and then place a copy of the user's file into that directory. In essence, this "proliferates" the user's files into the MakeBite structure, ready to be packed into a .mgsv file.
 
 This tool has a number options, but only one purpose:
 1. To help create a MakeBite-ready file structure from the user's input files.
 
 Notes:
 * **TppMasterFileList.txt**: The tool will look up files from a text document, TppMasterFileList.txt, which lists all of the file paths (including files contained in .fpk, .fpkd, .pftxs and .sbp files), excluding those from MGO/SDD Archives.
-  * TppFileList.txt is generated automatically after using the Archive Unpacker. The user can promote TppFileList.txt to TppMasterFileList.txt by simply changing the filename and replacing the old TppMasterFileList.txt.
+  * TppGeneratedFileList.txt is build automatically after using the Archive Unpacker. The user can promote TppGeneratedFileList.txt to TppMasterFileList.txt by simply changing the filename and replacing the old TppMasterFileList.txt.
   * Users can manually add file path entries into TppMasterFileList.txt, and File Proliferator will accept these paths as true MGSV file paths. 
     * This may be useful if the user intends to use custom texture or script names for their mod.
 * **Reference File**: The user can choose to select a "Reference File" for their directory structure. File Proliferator will search the MGSV file paths for folders that contain the Reference File, and then create a directory structure to mimic wherever that file was found. All of the user's input files are then copied to those folders.

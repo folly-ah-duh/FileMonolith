@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileProliferator", "FilePro
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTextureConverter", "MassTextureConverter\MassTextureConverter.csproj", "{021E8ABB-26CF-4D0B-9494-EC26B6EB0866}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilenameUpdater", "FilenameUpdater\FilenameUpdater.csproj", "{CEAB3C59-361F-4A88-AA2E-4496D44708EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{021E8ABB-26CF-4D0B-9494-EC26B6EB0866}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{021E8ABB-26CF-4D0B-9494-EC26B6EB0866}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{021E8ABB-26CF-4D0B-9494-EC26B6EB0866}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEAB3C59-361F-4A88-AA2E-4496D44708EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEAB3C59-361F-4A88-AA2E-4496D44708EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEAB3C59-361F-4A88-AA2E-4496D44708EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEAB3C59-361F-4A88-AA2E-4496D44708EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
