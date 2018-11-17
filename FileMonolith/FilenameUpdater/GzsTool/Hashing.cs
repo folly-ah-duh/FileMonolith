@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FilenameUpdater.GzsTool
 {
@@ -23,24 +20,6 @@ namespace FilenameUpdater.GzsTool
                     HashNameDictionary.Add(hash, line);
                 }
             }
-        }
-        internal static bool TryGetFileNameFromHash(ulong hash, out string fileName)
-        {
-            bool foundFileName = true;
-            string filePath;
-            
-            ulong pathHash = hash & 0x3FFFFFFFFFFFF;
-
-            fileName = "";
-            if (!HashNameDictionary.TryGetValue(pathHash, out filePath))
-            {
-                filePath = pathHash.ToString("x");
-                foundFileName = false;
-            }
-
-            fileName += filePath;
-
-            return foundFileName;
         }
 
         public static ulong HashFileName(string text, bool removeExtension = true)
@@ -83,5 +62,17 @@ namespace FilenameUpdater.GzsTool
                 : maskedHash;
         }
 
+        internal static bool TryGetFilePathFromHash(ulong hash, out string filePath)
+        {
+            bool foundFileName = true;
+            ulong pathHash = hash & 0x3FFFFFFFFFFFF;
+
+            if (!HashNameDictionary.TryGetValue(pathHash, out filePath))
+            {
+                foundFileName = false;
+            }
+
+            return foundFileName;
+        }
     }
 }

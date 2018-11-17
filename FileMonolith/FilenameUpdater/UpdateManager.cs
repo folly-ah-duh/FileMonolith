@@ -11,15 +11,93 @@ namespace FilenameUpdater
 {
     class UpdateManager
     {
-        public void DoUpdates()
+        private int successfulUpdateCount = 0;
+
+        public event EventHandler<FeedbackEventArgs> SendFeedback;
+
+        protected virtual void OnSendFeedback(string feedback)
+        {
+            SendFeedback?.Invoke(this, new FeedbackEventArgs() { Feedback = feedback });
+        }
+
+        public void DoUpdates(string[] inputFilePaths, string outputDir, bool includeDirs)
         {
             ReadDictionary();
-            string exampleinput = "3cb5fc5a6e14d";
-            ulong testFileHash = Convert.ToUInt64(exampleinput, 16);
-            string testString = "Frick if I know!";
-            Hashing.TryGetFileNameFromHash(testFileHash, out testString);
-            Console.WriteLine("The testFileHash is: " + testString);
+            UpdateFilePaths(inputFilePaths, outputDir, includeDirs);
         }
+
+        private void UpdateFilePaths(string[] inputFilePaths, string outputDir, bool includeDirs)
+        {
+            foreach (string inputFilePath in inputFilePaths)
+            {
+                string filename = Path.GetFileNameWithoutExtension(inputFilePath);
+                string ext = Path.GetExtension(inputFilePath);
+                string extInner = "";
+                if (filename.Contains(".")) // Ex: .1.ftexs, .eng.lng
+                {
+                    extInner = Path.GetExtension(filename);
+                    filename = Path.GetFileNameWithoutExtension(filename);
+                }
+                bool isUpdated = false;
+                ulong fileNameHash;
+
+                OnSendFeedback(filename);
+
+                if (TryGetFileNameHash(filename, out fileNameHash))
+                {
+                    string foundFilePathNoExt;
+                    string outputFilePath;
+
+                    if (Hashing.TryGetFilePathFromHash(fileNameHash, out foundFilePathNoExt))
+                    {
+                        foundFilePathNoExt = foundFilePathNoExt.Remove(0, 1);
+                        if (includeDirs)
+                        {
+                            outputFilePath = Path.Combine(outputDir, foundFilePathNoExt + extInner + ext);
+                        }
+                        else
+                        {
+                            outputFilePath = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(foundFilePathNoExt) + extInner + ext);
+                        }
+
+                        string outputFilePathDir = Path.GetDirectoryName(outputFilePath);
+                        if (!Directory.Exists(outputFilePathDir))
+                        {
+                            Directory.CreateDirectory(outputFilePathDir);
+                        }
+                        File.Copy(inputFilePath, outputFilePath, true);
+
+                        isUpdated = true;
+                    }
+                }
+
+                if (isUpdated)
+                {
+                    successfulUpdateCount++;
+                } 
+                else
+                {
+                    OnSendFeedback(filename + " Update Failed");
+                }
+
+            }
+        }
+
+        private bool TryGetFileNameHash(string filename, out ulong fileNameHash)
+        {
+            bool isConverted = true;
+            try
+            {
+                fileNameHash = Convert.ToUInt64(filename, 16);
+            }
+            catch (FormatException)
+            {
+                isConverted = false;
+                fileNameHash = 0;
+            }
+            return isConverted;
+        }
+
         private static void ReadDictionary()
         {
             string executingAssemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -33,5 +111,11 @@ namespace FilenameUpdater
                 Console.WriteLine("Error reading {0}: {1}", qarDictionaryName, e.Message);
             }
         }
+
+        internal int getSuccessCount()
+        {
+            return successfulUpdateCount;
+        }
+        
     }
 }

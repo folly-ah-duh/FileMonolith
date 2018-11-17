@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace FileProliferator
+namespace FilenameUpdater
 {
-    public partial class FormProcessingProliferation : Form
+    public partial class FormProcessingUpdate : Form
     {
-        public FormProcessingProliferation()
+        public FormProcessingUpdate()
         {
             InitializeComponent();
         }

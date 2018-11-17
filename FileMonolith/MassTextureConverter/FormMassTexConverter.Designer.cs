@@ -72,7 +72,7 @@
             this.buttonStart.Name = "buttonStart";
             this.buttonStart.Size = new System.Drawing.Size(72, 33);
             this.buttonStart.TabIndex = 13;
-            this.buttonStart.Text = "Unpack";
+            this.buttonStart.Text = "Convert";
             this.buttonStart.UseVisualStyleBackColor = true;
             this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
             // 
