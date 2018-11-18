@@ -7,7 +7,7 @@ File Monolith is a set of file management tools for Metal Gear Solid V. The goal
 * **Archive Unpacker**: The user can select Archive (.dat) files, which the tool will unpack into a target directory. Then, the tool will unpack all .fkp, .fpkd, .pftxs, and .sbp files within the directory.
 * **Mass Texture Converter**: The user can select a directory and the tool will attempt to convert all texture files from .ftex(s) to .dds. The resulting .dds files are sent to a target directory.
 * **File Proliferator**: The user selects any number of files, of any type. The tool will search for these files in the MGSV file structure. If these filenames are found in the game files, the tool creates a directory structure to mirror MGSV's and then copies the user's files into the structure.
-
+* **Filename Updater**: The user can select any files with hashed filenames, and the tool will attempt to update their names and filepaths using the latest qar_dictionary. Any updated files are copied to the target directory.
 ## Archive Unpacker
 
 The Archive Unpacker is a simple tool which unpacks user-specified .dat files, and then unpacks all .fpk, .fpkd, .pftxs and .sbp files which resided in the .dat files into one single directory structure. 
@@ -67,3 +67,16 @@ Notes:
   * **Pack _pftxs**: Upon creating the MakeBite Directory Structure, this option will automatically pack any _pftxs folders to .pftxs files using BobDoleOwndU's AutoPftxsTool.
     * Since MakeBite does not automatically repack _pftxs folders like it does with _fpk or _fpkd, the user will need to either manually pack _pftxs folders, or check the "Pack _pftxs" checkbox.
     * After packing the .pftxs files, File Proliferator will ask the user whether to delete the leftover _pftxs folders. In either case, the user should not include _pftxs folders in their final MakeBite file.
+
+## Filename Updater
+
+The Filename Updater allows users to update old, hashed filenames to their unhashed filepaths. Assuming that the files were originally unpacked using an outdated version of the qar_dictionary.txt, this tool will copy and rename the input files to the target directory.
+
+This tool has one purpose:
+1. To provide users with support when updating old mods.
+
+Notes:
+* Upon finding an update for a filename, the tool will create a copy of the hashed file. The copy is then renamed and moved to the output directory.
+  * (Ex: 3cb5fc5a6e14d.2.ftexs -> \targetDirectory\\am10_main0_def_c00_bsm.2.ftexs)
+* When a filename is updated, the tool can include the file's full filepath by checking the "Include Directory Structure" checkbox. The copy of the updated file will be sent into the directory structure.
+  * (Ex: 3cb5fc5a6e14d.2.ftexs -> \targetDirectory\Assets\tpp\weapon\amo\Pictures\am10_main0_def_c00_bsm.2.ftexs)

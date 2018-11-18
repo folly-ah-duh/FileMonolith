@@ -29,6 +29,7 @@ namespace ArchiveUnpacker
             ReadDictionaries();
             UnpackQarArchives(archiveFilePaths, outputDir);
             UnpackChildArchives(outputDir, isCondensed);
+            //UnpackChildArchivesCatchEdgeCases(outputDir, isCondensed);
         }
 
         private void ReadDictionaries()
@@ -74,10 +75,10 @@ namespace ArchiveUnpacker
 
         public void UnpackChildArchives(string rootDir, bool moveToRoot) // note: archives preexisting in the rootDir will be read. This could potentially lead to the unhashed and the hashed filenames both getting listed to TppGeneratedFileList
         {
-            File.Delete("TppGeneratedFileList.txt"); // TppGeneratedFileList.txt should live with the .exe's and a TppMasterFileList.txt, so that the user can swap out the master file list
+            File.Delete("TppGeneratedOddBallFileList.txt"); // TppGeneratedFileList.txt should live with the .exe's and a TppMasterFileList.txt, so that the user can swap out the master file list
             List<string> ChildPaths;
 
-            using (StreamWriter TppFileList = File.CreateText("TppGeneratedFileList.txt"))
+            using (StreamWriter TppFileList = File.CreateText("TppGeneratedOddBallFileList.txt"))
             {
                 if (moveToRoot)
                 {
@@ -115,7 +116,7 @@ namespace ArchiveUnpacker
                         }
                     }
                 }
-                else // duplicate code here, because I can save on a tiny bit of processing by moving the moveToRoot conditional outside of the foreach loop.
+                else
                     foreach (var fileInfo in new DirectoryInfo(rootDir).EnumerateFiles("*", SearchOption.AllDirectories))
                     {
                         string filePath = fileInfo.FullName;
@@ -153,6 +154,87 @@ namespace ArchiveUnpacker
 
         }
 
+        public void UnpackChildArchivesCatchEdgeCases(string rootDir, bool moveToRoot) // Searches for oddball files that share a filename but have different contents
+        {
+            File.Delete("TppGeneratedFileList.txt");
+            List<string> ChildPaths;
+
+            using (StreamWriter TppFileList = File.CreateText("TppGeneratedFileList.txt"))
+            {
+                if (moveToRoot)
+                {
+                    foreach (var fileInfo in new DirectoryInfo(rootDir).EnumerateFiles("*", SearchOption.AllDirectories))
+                    {
+                        string filePath = fileInfo.FullName;
+                        TppFileList.WriteLine(filePath.Remove(0, rootDir.Length + 1));
+
+                        string extension = Path.GetExtension(filePath).Replace(".", "");
+
+                        string unpackPath = string.Format("{0}\\{1}_{2}", Path.GetDirectoryName(filePath), Path.GetFileNameWithoutExtension(filePath), extension);
+                        string unpackPathWithoutRootDir = unpackPath.Remove(0, rootDir.Length + 1);
+
+                        switch (extension)
+                        {
+                            case "fpk":
+                            case "fpkd":
+                                ChildPaths = ReadArchiveCatchEdgeCases<FpkFile>(filePath, rootDir);
+                                foreach (string childPath in ChildPaths)
+                                    TppFileList.WriteLine(Path.Combine(unpackPathWithoutRootDir, childPath));
+                                OnSendFeedback(unpackPathWithoutRootDir);
+                                break;
+                            case "pftxs":
+                                ChildPaths = ReadArchiveCatchEdgeCases<PftxsFile>(filePath, rootDir);
+                                foreach (string childPath in ChildPaths)
+                                    TppFileList.WriteLine(Path.Combine(unpackPathWithoutRootDir, childPath));
+                                OnSendFeedback(unpackPathWithoutRootDir);
+                                break;
+                            case "sbp":
+                                ChildPaths = ReadArchiveCatchEdgeCases<SbpFile>(filePath, rootDir);
+                                foreach (string childPath in ChildPaths)
+                                    TppFileList.WriteLine(Path.Combine(unpackPathWithoutRootDir, childPath));
+                                OnSendFeedback(unpackPathWithoutRootDir);
+                                break;
+                        }
+                    }
+                }
+                else
+                    foreach (var fileInfo in new DirectoryInfo(rootDir).EnumerateFiles("*", SearchOption.AllDirectories))
+                    {
+                        string filePath = fileInfo.FullName;
+                        TppFileList.WriteLine(filePath.Remove(0, rootDir.Length + 1));
+
+                        string extension = Path.GetExtension(filePath).Replace(".", "");
+
+                        string unpackPath = string.Format("{0}\\{1}_{2}", Path.GetDirectoryName(filePath), Path.GetFileNameWithoutExtension(filePath), extension);
+                        string unpackPathWithoutRootDir = unpackPath.Remove(0, rootDir.Length + 1);
+
+                        switch (extension)
+                        {
+                            case "fpk":
+                            case "fpkd":
+                                ChildPaths = ReadArchiveCatchEdgeCases<FpkFile>(filePath, unpackPath);
+                                foreach (string childPath in ChildPaths)
+                                    TppFileList.WriteLine(Path.Combine(unpackPathWithoutRootDir, childPath));
+                                OnSendFeedback(unpackPathWithoutRootDir);
+                                break;
+                            case "pftxs":
+                                ChildPaths = ReadArchiveCatchEdgeCases<PftxsFile>(filePath, unpackPath);
+                                foreach (string childPath in ChildPaths)
+                                    TppFileList.WriteLine(Path.Combine(unpackPathWithoutRootDir, childPath));
+                                OnSendFeedback(unpackPathWithoutRootDir);
+                                break;
+                            case "sbp":
+                                ChildPaths = ReadArchiveCatchEdgeCases<SbpFile>(filePath, unpackPath);
+                                foreach (string childPath in ChildPaths)
+                                    TppFileList.WriteLine(Path.Combine(unpackPathWithoutRootDir, childPath));
+                                OnSendFeedback(unpackPathWithoutRootDir);
+                                break;
+                        }
+                    }
+            }
+
+        }
+
         public List<string> ReadArchive<T>(string filePath, string outputDir) where T : ArchiveFile, new()
         {
 
@@ -167,6 +249,52 @@ namespace ArchiveUnpacker
                 {
                     fileNames.Add(exportedFile.FileName);
                     iDir.WriteFile(exportedFile.FileName, exportedFile.DataStream);
+                }
+
+            }
+            return fileNames;
+        }
+
+        public List<string> ReadArchiveCatchEdgeCases<T>(string filePath, string outputDir) where T : ArchiveFile, new() // Searches for oddball files that share a filename but have different contents
+        {
+
+            IDirectory iDir = new FileSystemDirectory(outputDir);
+            List<string> fileNames = new List<string>();
+
+            using (FileStream input = new FileStream(filePath, FileMode.Open))
+            {
+                T file = new T();
+                file.Read(input);
+                foreach (var exportedFile in file.ExportFiles(input))
+                {
+                    string exportedFileFullName = Path.Combine(outputDir, exportedFile.FileName);
+                    if (File.Exists(exportedFileFullName))
+                    {
+                        string outfilename = Path.GetFileName(exportedFile.FileName);
+                        string outfileDir = Path.GetDirectoryName(exportedFile.FileName);
+                        string parentFilename = Path.GetFileNameWithoutExtension(filePath);
+
+                        exportedFile.FileName = Path.Combine(outfileDir, parentFilename + "_oddball_" + outfilename);
+
+                        fileNames.Add(exportedFile.FileName);
+                        iDir.WriteFile(exportedFile.FileName, exportedFile.DataStream);
+
+                        string specialFileFullName = Path.Combine(outputDir, exportedFile.FileName);
+                        if (new FileInfo(specialFileFullName).Length == new FileInfo(exportedFileFullName).Length)
+                        {
+                            File.Delete(specialFileFullName);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Special file found: " + specialFileFullName);
+                        }
+                    }
+                    else
+                    {
+                        fileNames.Add(exportedFile.FileName);
+                        iDir.WriteFile(exportedFile.FileName, exportedFile.DataStream);
+                    }
+
                 }
 
             }
