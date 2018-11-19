@@ -63,7 +63,7 @@ namespace ArchiveUnpacker
                 try
                 {
                     OnSendFeedback(Path.GetFileName(filePath));
-                    ReadArchive<QarFile>(filePath, outputDir);
+                    ReadQARArchive(filePath, outputDir);
                 }
                 catch (ArgumentOutOfRangeException)
                 {
@@ -75,10 +75,10 @@ namespace ArchiveUnpacker
 
         public void UnpackChildArchives(string rootDir, bool moveToRoot) // note: archives preexisting in the rootDir will be read. This could potentially lead to the unhashed and the hashed filenames both getting listed to TppGeneratedFileList
         {
-            File.Delete("TppGeneratedOddBallFileList.txt"); // TppGeneratedFileList.txt should live with the .exe's and a TppMasterFileList.txt, so that the user can swap out the master file list
+            File.Delete("TppGeneratedFileList.txt"); // TppGeneratedFileList.txt should live with the .exe's and a TppMasterFileList.txt, so that the user can swap out the master file list
             List<string> ChildPaths;
 
-            using (StreamWriter TppFileList = File.CreateText("TppGeneratedOddBallFileList.txt"))
+            using (StreamWriter TppFileList = File.CreateText("TppGeneratedFileList.txt"))
             {
                 if (moveToRoot)
                 {
@@ -247,12 +247,37 @@ namespace ArchiveUnpacker
                 file.Read(input);
                 foreach (var exportedFile in file.ExportFiles(input))
                 {
-                    fileNames.Add(exportedFile.FileName);
-                    iDir.WriteFile(exportedFile.FileName, exportedFile.DataStream);
-                }
+                    if (typeof(T) == typeof(SbpFile))
+                    {
+                        exportedFile.FileName = Path.GetFileNameWithoutExtension(filePath) + exportedFile.FileName;
+                    }
 
+                    fileNames.Add(exportedFile.FileName);
+
+                    string exportedFileFullName = Path.Combine(outputDir, exportedFile.FileName);
+                    if (!File.Exists(exportedFileFullName)) // saved roughly 1:10 when unpacking texture3 and chunk3
+                    {
+                        iDir.WriteFile(exportedFile.FileName, exportedFile.DataStream);
+                    }
+                }
             }
             return fileNames;
+        }
+
+        public void ReadQARArchive(string filePath, string outputDir)
+        {
+
+            IDirectory iDir = new FileSystemDirectory(outputDir);
+
+            using (FileStream input = new FileStream(filePath, FileMode.Open))
+            {
+                QarFile file = new QarFile();
+                file.Read(input);
+                foreach (var exportedFile in file.ExportFiles(input))
+                {
+                    iDir.WriteFile(exportedFile.FileName, exportedFile.DataStream); // doesn't bother checking since dats don't often have pre-existing stuff to overwrite. saved roughly 30 seconds when unpacking texture3
+                }
+            }
         }
 
         public List<string> ReadArchiveCatchEdgeCases<T>(string filePath, string outputDir) where T : ArchiveFile, new() // Searches for oddball files that share a filename but have different contents
