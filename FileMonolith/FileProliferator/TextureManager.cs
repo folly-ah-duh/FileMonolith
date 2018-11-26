@@ -95,7 +95,7 @@ namespace FileProliferator
                     }
                     string textureTppListedDirPath = Path.GetDirectoryName(TppListedTexturePath);
                     OnSendFeedback(string.Format("Pulling {0}", Path.GetFileName(TppListedTexturePath)));
-                    string foundTexturePath = findTexturePath(vanillaTexturesPath, pftxsPath, TppListedTexturePath);
+                    string foundTexturePath = findTexturePath(vanillaTexturesPath, pftxsName, TppListedTexturePath);
                     if (foundTexturePath != null)
                     {
                         string fullOutputPath = Path.Combine(outputDirectory, textureTppListedDirPath);
@@ -119,9 +119,11 @@ namespace FileProliferator
             }
         }
 
-        private string findTexturePath(string vanillaTexturesPath, string pftxsPath, string TppListedTexturePath)
+        private string findTexturePath(string vanillaTexturesPath, string pftxsName, string TppListedTexturePath)
         {
-            string condensedTexturePath = (TppListedTexturePath.Remove(0, pftxsPath.Length + 1)); //Expected path if textures were unpacked with Archive Unpacker's Condensed Directory Structure
+            int nameIndex = TppListedTexturePath.IndexOf(pftxsName);
+            string condensedTexturePath = (TppListedTexturePath.Substring(nameIndex + pftxsName.Length + 1)); //Expected path if textures were unpacked with Archive Unpacker's Condensed Directory Structure
+            //Console.WriteLine("condensedTexturePath = " + condensedTexturePath);
             condensedTexturePath = Path.Combine(vanillaTexturesPath, condensedTexturePath);
             if (File.Exists(condensedTexturePath))
             {
@@ -156,11 +158,6 @@ namespace FileProliferator
 
                 OnSendFeedback("Packing: " + pftxsFileName);
                 AutoPftxsTool.ArchiveHandler.WritePftxsArchive(pftxsFilePath, pftxsDirPath);
-
-                if (File.Exists(pftxsFilePath))
-                {
-                    DeleteDirectory(pftxsDirPath);
-                }
             }
         }
 

@@ -146,7 +146,7 @@ namespace FileProliferator
             {
                 ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { selectedFilePaths = textureManager.convertDdsToFtex(selectedFilePaths); }));
             }
-
+            Console.WriteLine("Ftex Conversion Complete");
             int ddsConversionFailedCount = textureManager.getConversionFailedCount();
             if (ddsConversionFailedCount > 0)
             {
@@ -163,7 +163,7 @@ namespace FileProliferator
             {
                 ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { proliferator.DoProliferateFromReference(selectedFilePaths, outputDirectory, checkSetRefRoot.Checked, referenceFileName); }));
             }
-
+            Console.WriteLine("DoProliferate Complete");
             if (checkPullTextures.Checked)
             {
                 if (checkRefFile.Checked)
@@ -173,8 +173,10 @@ namespace FileProliferator
                 else
                 {
                     ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { textureManager.PullVanillaTextures(outputDirectory, VanillaTexturesPath, selectedFilePaths); }));
+                    //textureManager.PullVanillaTextures(outputDirectory, VanillaTexturesPath, selectedFilePaths);
                 }
 
+                Console.WriteLine("PullVanillaTextures Complete");
             }
 
             int texturePullsFailed = textureManager.getTextureNotFoundCount();
@@ -197,6 +199,7 @@ namespace FileProliferator
                         ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { textureManager.DeletePftxsFolders(outputDirectory); }));
                     }
                 }
+                Console.WriteLine("Pack _PFTXS Complete");
             }
 
             if (texturePullsFailed > 0)

@@ -12,7 +12,10 @@ namespace FileProliferator
 
         public void OnSendFeedback(object source, FeedbackEventArgs e)
         {
-            labelCurrentFile.Invoke(new Action(() => labelCurrentFile.Text = e.Feedback));
+            try
+            {
+                labelCurrentFile.Invoke(new Action(() => labelCurrentFile.Text = e.Feedback));
+            } catch (InvalidOperationException) { }
         }
     }
 }
