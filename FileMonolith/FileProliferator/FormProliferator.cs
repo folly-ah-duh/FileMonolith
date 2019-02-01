@@ -25,6 +25,24 @@ namespace FileProliferator
                 return;
             }
 
+            string defaultOutputDir = Properties.Settings.Default.outputDirectory;
+            if (!string.IsNullOrEmpty(defaultOutputDir))
+            {
+                if (Directory.Exists(defaultOutputDir))
+                {
+                    outputDirectory = defaultOutputDir;
+                    textOutDir.Text = defaultOutputDir;
+                }
+            }
+            string defaultTextureDir = Properties.Settings.Default.textureDirectory;
+            if (!string.IsNullOrEmpty(defaultTextureDir))
+            {
+                if (Directory.Exists(defaultTextureDir))
+                {
+                    VanillaTexturesPath = defaultTextureDir;
+                    textTextureDir.Text = defaultTextureDir;
+                }
+            }
         }
 
         private string[] selectedFilePaths { get; set; }
@@ -41,10 +59,24 @@ namespace FileProliferator
             inputFileDialog.Filter = "All files (*.*)|*.*";
             inputFileDialog.Multiselect = true;
 
+            string inputDirectory = Properties.Settings.Default.inputDirectory;
+            if (!string.IsNullOrEmpty(inputDirectory))
+            {
+                if (Directory.Exists(inputDirectory))
+                {
+                    inputFileDialog.InitialDirectory = inputDirectory;
+                }
+            }
+
             DialogResult selectionResult = inputFileDialog.ShowDialog();
             if (selectionResult != DialogResult.OK) return;
-            
+
             selectedFilePaths = inputFileDialog.FileNames;
+            if (selectedFilePaths.Length > 0)
+            {
+                Properties.Settings.Default.inputDirectory = Path.GetDirectoryName(selectedFilePaths[0]);
+                Properties.Settings.Default.Save();
+            }
 
             string filesText = "";
             foreach (string filePath in selectedFilePaths)
@@ -65,10 +97,27 @@ namespace FileProliferator
             OpenFileDialog inputFileDialog = new OpenFileDialog();
             inputFileDialog.Filter = "All files (*.*)|*.*";
 
+            string defaultRefDir = Properties.Settings.Default.refDirectory;
+            if (!string.IsNullOrEmpty(defaultRefDir))
+            {
+                if (Directory.Exists(defaultRefDir))
+                {
+                    inputFileDialog.InitialDirectory = defaultRefDir;
+                }
+            }
+
             DialogResult selectionResult = inputFileDialog.ShowDialog();
             if (selectionResult != DialogResult.OK) return;
 
-            referenceFileName = Path.GetFileName(inputFileDialog.FileName);
+            string refFilePath = inputFileDialog.FileName;
+            referenceFileName = Path.GetFileName(refFilePath);
+
+            if (!string.IsNullOrEmpty(refFilePath))
+            {
+                Properties.Settings.Default.refDirectory = Path.GetDirectoryName(refFilePath);
+                Properties.Settings.Default.Save();
+            }
+
             textRefFile.Text = string.Format("\"{0}\" ", referenceFileName);
         }
 
@@ -76,10 +125,24 @@ namespace FileProliferator
         {
             FolderSelectDialog selectionDialog = new FolderSelectDialog();
             selectionDialog.Title = "Choose a folder where the MakeBite structure will be built. Making a new folder is highly recommended.";
-            if (textOutDir.Text != null)
-                selectionDialog.InitialDirectory = textOutDir.Text;
+
+            string defaultOutputDir = Properties.Settings.Default.outputDirectory;
+            if (!string.IsNullOrEmpty(defaultOutputDir))
+            {
+                if (Directory.Exists(defaultOutputDir))
+                {
+                    selectionDialog.InitialDirectory = defaultOutputDir;
+                }
+            }
+            
             if (selectionDialog.ShowDialog() != true) return;
             string directoryPath = selectionDialog.FileName;
+            
+            if (!string.IsNullOrEmpty(directoryPath))
+            {
+                Properties.Settings.Default.outputDirectory = directoryPath;
+                Properties.Settings.Default.Save();
+            }
 
             outputDirectory = directoryPath;
             textOutDir.Text = directoryPath;
@@ -94,10 +157,24 @@ namespace FileProliferator
         {
             FolderSelectDialog selectionDialog = new FolderSelectDialog();
             selectionDialog.Title = "Choose a folder where vanilla .ftex and .ftexs files can be copied from. The tool will search subfolders as well.";
-            if (textTextureDir.Text != null)
-                selectionDialog.InitialDirectory = textTextureDir.Text;
+
+            string defaultTextureDir = Properties.Settings.Default.textureDirectory;
+            if (!string.IsNullOrEmpty(defaultTextureDir))
+            {
+                if (Directory.Exists(defaultTextureDir))
+                {
+                    selectionDialog.InitialDirectory = defaultTextureDir;
+                }
+            }
+
             if (selectionDialog.ShowDialog() != true) return;
             string directoryPath = selectionDialog.FileName;
+
+            if (!string.IsNullOrEmpty(directoryPath))
+            {
+                Properties.Settings.Default.textureDirectory = directoryPath;
+                Properties.Settings.Default.Save();
+            }
 
             VanillaTexturesPath = directoryPath;
             textTextureDir.Text = directoryPath;
