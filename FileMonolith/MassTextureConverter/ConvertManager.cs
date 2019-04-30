@@ -10,6 +10,7 @@ namespace MassTextureConverter
         public event EventHandler<FeedbackEventArgs> SendFeedback;
 
         private int conversionFailedCount = 0;
+        private int conversionTryCount = 0;
 
         protected virtual void OnSendFeedback(string feedback)
         {
@@ -46,6 +47,7 @@ namespace MassTextureConverter
                 {
                     //string[] ftexArgs = { ftexFileInfo.FullName, ddsOutputDir }; Same outcome, but using UnpackFtexFile directly saves on processing. UnpackFtexFile is private by default, so I made it public in the dll I'm using.
                     //FtexTool.Program.Main(ftexArgs);
+                    conversionTryCount++;
                     FtexTool.Program.UnpackFtexFile(ftexFileInfo.FullName, ddsOutputDir);
                 }
                 catch (FtexTool.Exceptions.MissingFtexsFileException)
@@ -58,6 +60,11 @@ namespace MassTextureConverter
         public int GetFailureCount()
         {
             return conversionFailedCount;
+        }
+
+        public int GetTryCount()
+        {
+            return conversionTryCount;
         }
     }
 }

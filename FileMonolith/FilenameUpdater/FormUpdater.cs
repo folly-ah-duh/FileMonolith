@@ -18,6 +18,11 @@ namespace FilenameUpdater
         public FormUpdater()
         {
             InitializeComponent();
+
+            if (!File.Exists("qar_dictionary.txt"))
+            {
+                MessageBox.Show("qar_dictionary.txt is missing from the application folder. This tool cannot update filenames without qar_dictionary.txt", "Missing qar_dictionary.txt", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private string[] selectedFilePaths { get; set; }
@@ -76,9 +81,10 @@ namespace FilenameUpdater
             ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { updater.DoUpdates(selectedFilePaths, outputDirectory, checkIncludeDirs.Checked); }));
 
             int successfulUpdatesCount = updater.getSuccessCount();
+            int totalFileCount = updater.getTotalCount();
             if (successfulUpdatesCount > 0)
             {
-                MessageBox.Show(string.Format("{0} Filename(s) successfully updated.", successfulUpdatesCount), "Update Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(string.Format("{0} of {1} Filename(s) successfully updated.", successfulUpdatesCount, totalFileCount), "Update Results", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {

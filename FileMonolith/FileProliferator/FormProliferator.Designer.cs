@@ -32,7 +32,6 @@
             this.textFiles = new System.Windows.Forms.TextBox();
             this.labelFiles = new System.Windows.Forms.Label();
             this.buttonProliferate = new System.Windows.Forms.Button();
-            this.checkRefFile = new System.Windows.Forms.CheckBox();
             this.textRefFile = new System.Windows.Forms.TextBox();
             this.buttonRefFile = new System.Windows.Forms.Button();
             this.labelOutDir = new System.Windows.Forms.Label();
@@ -46,6 +45,8 @@
             this.textTextureDir = new System.Windows.Forms.TextBox();
             this.groupStructureOptions = new System.Windows.Forms.GroupBox();
             this.checkSetRefRoot = new System.Windows.Forms.CheckBox();
+            this.checkRefFile = new System.Windows.Forms.CheckBox();
+            this.checkNameUpdates = new System.Windows.Forms.CheckBox();
             this.groupTextureOptions.SuspendLayout();
             this.groupStructureOptions.SuspendLayout();
             this.SuspendLayout();
@@ -86,17 +87,6 @@
             this.buttonProliferate.Text = "Build Directory Structure...";
             this.buttonProliferate.UseVisualStyleBackColor = true;
             this.buttonProliferate.Click += new System.EventHandler(this.buttonProliferate_Click);
-            // 
-            // checkRefFile
-            // 
-            this.checkRefFile.AutoSize = true;
-            this.checkRefFile.Location = new System.Drawing.Point(6, 19);
-            this.checkRefFile.Name = "checkRefFile";
-            this.checkRefFile.Size = new System.Drawing.Size(322, 17);
-            this.checkRefFile.TabIndex = 4;
-            this.checkRefFile.Text = "Use Reference File (Copy files anywhere that contains this file):";
-            this.checkRefFile.UseVisualStyleBackColor = true;
-            this.checkRefFile.CheckedChanged += new System.EventHandler(this.checkRefFile_CheckedChanged);
             // 
             // textRefFile
             // 
@@ -233,11 +223,34 @@
             this.checkSetRefRoot.Text = "Set in Root of Packs";
             this.checkSetRefRoot.UseVisualStyleBackColor = true;
             // 
+            // checkRefFile
+            // 
+            this.checkRefFile.AutoSize = true;
+            this.checkRefFile.Location = new System.Drawing.Point(6, 19);
+            this.checkRefFile.Name = "checkRefFile";
+            this.checkRefFile.Size = new System.Drawing.Size(322, 17);
+            this.checkRefFile.TabIndex = 4;
+            this.checkRefFile.Text = "Use Reference File (Copy files anywhere that contains this file):";
+            this.checkRefFile.UseVisualStyleBackColor = true;
+            this.checkRefFile.CheckedChanged += new System.EventHandler(this.checkRefFile_CheckedChanged);
+            // 
+            // checkNameUpdates
+            // 
+            this.checkNameUpdates.AutoSize = true;
+            this.checkNameUpdates.Location = new System.Drawing.Point(18, 95);
+            this.checkNameUpdates.Name = "checkNameUpdates";
+            this.checkNameUpdates.Size = new System.Drawing.Size(155, 17);
+            this.checkNameUpdates.TabIndex = 8;
+            this.checkNameUpdates.Text = "Check for filename updates";
+            this.checkNameUpdates.UseVisualStyleBackColor = true;
+            this.checkNameUpdates.CheckedChanged += new System.EventHandler(this.checkNameUpdates_CheckedChanged);
+            // 
             // FormProliferator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(504, 296);
+            this.Controls.Add(this.checkNameUpdates);
             this.Controls.Add(this.groupStructureOptions);
             this.Controls.Add(this.groupTextureOptions);
             this.Controls.Add(this.labelOutDir);
@@ -268,7 +281,6 @@
         private System.Windows.Forms.TextBox textFiles;
         private System.Windows.Forms.Label labelFiles;
         private System.Windows.Forms.Button buttonProliferate;
-        private System.Windows.Forms.CheckBox checkRefFile;
         private System.Windows.Forms.TextBox textRefFile;
         private System.Windows.Forms.Button buttonRefFile;
         private System.Windows.Forms.Label labelOutDir;
@@ -282,6 +294,8 @@
         private System.Windows.Forms.TextBox textTextureDir;
         private System.Windows.Forms.GroupBox groupStructureOptions;
         private System.Windows.Forms.CheckBox checkSetRefRoot;
+        private System.Windows.Forms.CheckBox checkRefFile;
+        private System.Windows.Forms.CheckBox checkNameUpdates;
     }
 }
 

@@ -32,11 +32,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CityHash, Version=0.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Documents\Visual Studio 2015\Projects\SOC\SOC\SOCassets\ToolAssets\CityHash.dll</HintPath>
+    </Reference>
     <Reference Include="FtexTool">
       <HintPath>..\..\..\..\..\Downloads\FtexTool-0.4.0\FtexTool-0.4.0\FtexTool\bin\Debug\FtexTool.dll</HintPath>
     </Reference>
-    <Reference Include="GzsTool.Core">
-      <HintPath>..\..\..\..\..\Documents\Visual Studio 2015\Projects\GzsTool.v0.5.3.1b\GzsTool.Core.dll</HintPath>
+    <Reference Include="GzsTool.Core, Version=0.5.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Documents\GitHub\GzsTool\GzsTool\bin\Debug\GzsTool.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -66,11 +71,13 @@
     <Compile Include="FormProliferator.Designer.cs">
       <DependentUpon>FormProliferator.cs</DependentUpon>
     </Compile>
+    <Compile Include="GzsTool\Hashing.cs" />
     <Compile Include="ProcessingWindow\ProcessingWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProliferateManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextureManager.cs" />
+    <Compile Include="UpdateManager.cs" />
     <EmbeddedResource Include="FormProcessingProliferation.resx">
       <DependentUpon>FormProcessingProliferation.cs</DependentUpon>
     </EmbeddedResource>

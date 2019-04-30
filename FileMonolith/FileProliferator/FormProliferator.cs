@@ -213,9 +213,11 @@ namespace FileProliferator
                 return;
             }
 
+            UpdateManager updateManager = new UpdateManager();
             TextureManager textureManager = new TextureManager();
             ProliferateManager proliferator = new ProliferateManager();
             FormProcessingProliferation processWindow = new FormProcessingProliferation();
+            updateManager.SendFeedback += processWindow.OnSendFeedback;
             proliferator.SendFeedback += processWindow.OnSendFeedback;
             textureManager.SendFeedback += processWindow.OnSendFeedback;
 
@@ -230,6 +232,11 @@ namespace FileProliferator
                 DialogResult dialogResult = MessageBox.Show(string.Format("There were {0} .dds file(s) that failed to convert to .ftex formatting. Unconverted .dds files will not be included in the Directory Structure.\n\nWould you still like to build the Directory Structure?", ddsConversionFailedCount), "Missing _pftxs Textures", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (dialogResult != DialogResult.Yes)
                     return;
+            }
+
+            if(checkNameUpdates.Checked)
+            {
+                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { selectedFilePaths = updateManager.DoUpdates(selectedFilePaths); }));
             }
 
             if (!checkRefFile.Checked)
@@ -288,6 +295,18 @@ namespace FileProliferator
                 MessageBox.Show("Done!", "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
+        }
+
+        private void checkNameUpdates_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkNameUpdates.Checked)
+            {
+                if (!File.Exists("qar_dictionary.txt"))
+                {
+                    MessageBox.Show("qar_dictionary.txt is missing from the application folder. This tool cannot update filenames without qar_dictionary.txt", "Missing qar_dictionary.txt", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    checkNameUpdates.Checked = false;
+                }
+            }
         }
     }
 }

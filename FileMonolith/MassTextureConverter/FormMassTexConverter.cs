@@ -55,10 +55,11 @@ namespace MassTextureConverter
                 {
                     ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { converter.DoMassConversion(inputDirectory, outputDirectory, checkConvertSubfolders.Checked); }));
                     int conversionFailedCount = converter.GetFailureCount();
+                    int conversionTryCount = converter.GetTryCount();
                     if (conversionFailedCount > 0)
-                        MessageBox.Show(string.Format("Process Complete. {0} file(s) could not be converted (missing .ftexs).", conversionFailedCount), "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(string.Format("Process Complete. {0} of {1} file(s) could not be converted (missing .ftexs).", conversionFailedCount, conversionTryCount), "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     else
-                        MessageBox.Show("Done!", "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show(string.Format("{0} file(s) converted.", conversionTryCount), "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                     MessageBox.Show("Please select an output folder.", "Missing Output Directory", MessageBoxButtons.OK, MessageBoxIcon.Information);

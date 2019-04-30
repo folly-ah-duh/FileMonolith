@@ -1,4 +1,4 @@
-﻿using FilenameUpdater.GzsTool;
+﻿using FileProliferator.GzsTool;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FilenameUpdater
+namespace FileProliferator
 {
     class UpdateManager
     {
@@ -21,17 +21,19 @@ namespace FilenameUpdater
             SendFeedback?.Invoke(this, new FeedbackEventArgs() { Feedback = feedback });
         }
 
-        public void DoUpdates(string[] inputFilePaths, string outputDir, bool includeDirs)
+        public string[] DoUpdates(string[] inputFilePaths)
         {
             ReadDictionary();
-            UpdateFilePaths(inputFilePaths, outputDir, includeDirs);
+            return UpdateFilePaths(inputFilePaths);
         }
 
-        private void UpdateFilePaths(string[] inputFilePaths, string outputDir, bool includeDirs)
+        private string[] UpdateFilePaths(string[] inputFilePaths)
         {
-            foreach (string inputFilePath in inputFilePaths)
+
+            totalCount = inputFilePaths.Length;
+            for (int i = 0; i < inputFilePaths.Length; i++)
             {
-                totalCount++;
+                string inputFilePath = inputFilePaths[i];
                 string filename = Path.GetFileNameWithoutExtension(inputFilePath);
                 string ext = Path.GetExtension(inputFilePath);
                 string extInner = "";
@@ -48,26 +50,23 @@ namespace FilenameUpdater
                 if (TryGetFileNameHash(filename, out fileNameHash))
                 {
                     string foundFilePathNoExt;
+                    string dirPath = Path.GetDirectoryName(inputFilePath);
                     string outputFilePath;
 
                     if (Hashing.TryGetFilePathFromHash(fileNameHash, out foundFilePathNoExt))
                     {
                         foundFilePathNoExt = foundFilePathNoExt.Remove(0, 1);
-                        if (includeDirs)
-                        {
-                            outputFilePath = Path.Combine(outputDir, foundFilePathNoExt + extInner + ext);
-                        }
-                        else
-                        {
-                            outputFilePath = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(foundFilePathNoExt) + extInner + ext);
-                        }
+                        outputFilePath = Path.Combine(dirPath, Path.GetFileNameWithoutExtension(foundFilePathNoExt) + extInner + ext);
+                        
 
                         string outputFilePathDir = Path.GetDirectoryName(outputFilePath);
                         if (!Directory.Exists(outputFilePathDir))
                         {
                             Directory.CreateDirectory(outputFilePathDir);
                         }
+
                         File.Copy(inputFilePath, outputFilePath, true);
+                        inputFilePaths[i] = outputFilePath;
 
                         isUpdated = true;
                     }
@@ -76,13 +75,14 @@ namespace FilenameUpdater
                 if (isUpdated)
                 {
                     successfulUpdateCount++;
-                } 
+                }
                 else
                 {
                     OnSendFeedback(filename + " Update Failed");
                 }
 
             }
+            return inputFilePaths;
         }
 
         private bool TryGetFileNameHash(string filename, out ulong fileNameHash)
@@ -123,6 +123,6 @@ namespace FilenameUpdater
         {
             return totalCount;
         }
-        
+
     }
 }
