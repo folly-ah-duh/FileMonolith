@@ -33,6 +33,7 @@ namespace MassTextureConverter
 
             foreach (var ftexFileInfo in new DirectoryInfo(inputRootDir).EnumerateFiles("*.ftex", searchOpt))
             {
+                conversionTryCount++;
                 string ddsOutputDir = ftexFileInfo.FullName.Remove(0, numRemoveRootDir);
 
                 OnSendFeedback(ddsOutputDir);
@@ -47,7 +48,6 @@ namespace MassTextureConverter
                 {
                     //string[] ftexArgs = { ftexFileInfo.FullName, ddsOutputDir }; Same outcome, but using UnpackFtexFile directly saves on processing. UnpackFtexFile is private by default, so I made it public in the dll I'm using.
                     //FtexTool.Program.Main(ftexArgs);
-                    conversionTryCount++;
                     FtexTool.Program.UnpackFtexFile(ftexFileInfo.FullName, ddsOutputDir);
                 }
                 catch (FtexTool.Exceptions.MissingFtexsFileException)

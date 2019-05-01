@@ -57,7 +57,7 @@ namespace MassTextureConverter
                     int conversionFailedCount = converter.GetFailureCount();
                     int conversionTryCount = converter.GetTryCount();
                     if (conversionFailedCount > 0)
-                        MessageBox.Show(string.Format("Process Complete. {0} of {1} file(s) could not be converted (missing .ftexs).", conversionFailedCount, conversionTryCount), "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(string.Format("Process Complete.\n\n{0} of {1} file(s) could not be converted (missing .ftexs).", conversionFailedCount, conversionTryCount), "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     else
                         MessageBox.Show(string.Format("{0} file(s) converted.", conversionTryCount), "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

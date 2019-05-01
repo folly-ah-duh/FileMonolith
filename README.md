@@ -50,9 +50,11 @@ This tool has a number options, but only one purpose:
 
 Notes:
 * **TppMasterFileList.txt**: The tool will look up files from a text document, TppMasterFileList.txt, which lists all of the file paths (including files contained in .fpk, .fpkd, .pftxs and .sbp files), excluding those from MGO/SDD Archives.
-  * TppGeneratedFileList.txt is build automatically after using the Archive Unpacker. The user can promote TppGeneratedFileList.txt to TppMasterFileList.txt by simply changing the filename and replacing the old TppMasterFileList.txt.
+  * TppGeneratedFileList.txt is built automatically after using the Archive Unpacker. The user can promote TppGeneratedFileList.txt to TppMasterFileList.txt by simply changing the filename and replacing the old TppMasterFileList.txt.
   * Users can manually add file path entries into TppMasterFileList.txt, and File Proliferator will accept these paths as true MGSV file paths. 
     * This may be useful if the user intends to use custom texture or script names for their mod.
+* **Check for filename updates**: If this box is checked, the tool will check the input filenames for dictionary updates. If an update is found, the tool will create a copy of the file with an updated name, and continue the proliferation process using the updated filename.
+    * Having up-to-date filenames is important, because File Proliferator is using TppMasterFileList.txt to match filenames with directories. If the name of a file is outdated, the tool won't be able to proliferate it, because it cannot locate it within TppMasterFileList.txt.
 * **Reference File**: The user can choose to select a "Reference File" for their directory structure. File Proliferator will search the MGSV file paths for folders that contain the Reference File, and then create a directory structure to mimic wherever that file was found. All of the user's input files are then copied to those folders.
   * Using a Reference File is very situational, especially if the "Set in Root of Packs" checkbox is unchecked.
   * If the "Set in Root of Packs" checkbox is checked, File Proliferator will pull the user's file to the root directory of the _fpk, _fpkd, _pftxs and _sbp folders where the Reference File was found. This may be useful if the user is adding hashed files to the folder of a Reference File. 
@@ -71,6 +73,10 @@ Notes:
 ## Filename Updater
 
 The Filename Updater allows users to update old, hashed filenames to their unhashed filepaths. Assuming that the files were originally unpacked using an outdated version of the qar_dictionary.txt, this tool will copy and rename the input files to the target directory.
+
+NOTICE:
+* This tool's functionality has since been integrated into SnakeBite. The mod manager will automatically seek out filename updates during mod installation. For the sake of convention, It is still recommended that you keep your filenames up to date.
+* File Proliferator has also integrated this filename updating feature. Refer to the File Proliferator overview for details.
 
 This tool has one purpose:
 1. To provide users with support when updating old mods.
