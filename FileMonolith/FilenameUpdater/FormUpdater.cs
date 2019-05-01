@@ -52,8 +52,12 @@ namespace FilenameUpdater
         {
             FolderSelectDialog selectionDialog = new FolderSelectDialog();
             selectionDialog.Title = "Choose a folder where the updated files will be sent. Making a new folder is highly recommended.";
-            if (textOutDir.Text != null)
+
+            if (textOutDir.Text != "")
                 selectionDialog.InitialDirectory = textOutDir.Text;
+            else if (textInFiles.Text != "")
+                selectionDialog.InitialDirectory = Path.GetDirectoryName(selectedFilePaths[0]);
+
             if (selectionDialog.ShowDialog() != true) return;
             string directoryPath = selectionDialog.FileName;
 

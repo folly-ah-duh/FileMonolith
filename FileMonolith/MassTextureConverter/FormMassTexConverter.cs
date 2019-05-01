@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using FolderSelect;
 using ProcessWindow;
+using System.IO;
 
 namespace MassTextureConverter
 {
@@ -35,8 +36,12 @@ namespace MassTextureConverter
         {
             FolderSelectDialog selectionDialog = new FolderSelectDialog();
             selectionDialog.Title = "Choose an output folder. Making a new folder is highly recommended.";
-            if (textOutDir.Text != null)
+
+            if (textOutDir.Text != "")
                 selectionDialog.InitialDirectory = textOutDir.Text;
+            else if (textInDir.Text != "")
+                selectionDialog.InitialDirectory = inputDirectory;
+
             if (selectionDialog.ShowDialog() != true) return;
             string directoryPath = selectionDialog.FileName;
 

@@ -3,7 +3,6 @@ using ProcessWindow;
 using System;
 using System.IO;
 using System.Windows.Forms;
-using static System.Environment;
 
 namespace ArchiveUnpacker
 {
@@ -45,8 +44,12 @@ namespace ArchiveUnpacker
         {
             FolderSelectDialog selectionDialog = new FolderSelectDialog();
             selectionDialog.Title = "Choose a folder where the .dat files will unpack into. Making a new folder is highly recommended.";
-            if (textOutDir.Text != null)
+
+            if (textOutDir.Text != "")
                 selectionDialog.InitialDirectory = textOutDir.Text;
+            else if (textArchives.Text != "")
+                selectionDialog.InitialDirectory = Path.GetDirectoryName(archivePaths[0]);
+
             if (selectionDialog.ShowDialog() != true) return;
             string directoryPath = selectionDialog.FileName;
 
