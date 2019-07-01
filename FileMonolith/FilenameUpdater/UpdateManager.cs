@@ -16,15 +16,22 @@ namespace FilenameUpdater
 
         public event EventHandler<FeedbackEventArgs> SendFeedback;
 
-        protected virtual void OnSendFeedback(string feedback)
+        protected virtual void OnSendFeedback(object feedback)
         {
             SendFeedback?.Invoke(this, new FeedbackEventArgs() { Feedback = feedback });
         }
 
         public void DoUpdates(string[] inputFilePaths, string outputDir, bool includeDirs)
         {
-            ReadDictionary();
-            UpdateFilePaths(inputFilePaths, outputDir, includeDirs);
+            try
+            {
+                ReadDictionary();
+                UpdateFilePaths(inputFilePaths, outputDir, includeDirs);
+            }
+            catch (Exception e)
+            {
+                OnSendFeedback(e);
+            }
         }
 
         private void UpdateFilePaths(string[] inputFilePaths, string outputDir, bool includeDirs)
@@ -79,7 +86,7 @@ namespace FilenameUpdater
                 } 
                 else
                 {
-                    OnSendFeedback(filename + " Update Failed");
+                    OnSendFeedback(filename + " update not found");
                 }
 
             }

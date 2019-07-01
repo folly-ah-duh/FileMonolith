@@ -14,8 +14,12 @@ namespace FileProliferator
         {
             try
             {
-                labelCurrentFile.Invoke(new Action(() => labelCurrentFile.Text = e.Feedback));
-            } catch (InvalidOperationException) { }
+                labelCurrentFile.Invoke(new Action(() => labelCurrentFile.Text = (string)e.Feedback));
+            }
+            catch
+            {
+                MessageBox.Show("Exception occurred during proliferation: \n" + (Exception)e.Feedback);
+            }
         }
     }
 }

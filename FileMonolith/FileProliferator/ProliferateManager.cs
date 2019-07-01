@@ -13,27 +13,34 @@ namespace FileProliferator
 
         public event EventHandler<FeedbackEventArgs> SendFeedback;
 
-        protected virtual void OnSendFeedback(string feedback)
+        protected virtual void OnSendFeedback(object feedback)
         {
             SendFeedback?.Invoke(this, new FeedbackEventArgs() { Feedback = feedback });
         }
 
         public void DoProliferate(string[] filesToProlif, string outputPath)
         {
-            foreach (string fileToProlif in filesToProlif)
+            try
             {
-                string fileName = Path.GetFileName(fileToProlif);
-                List<string> foundDirectories = SearchDirectoriesEndsWith(fileName);
-
-                if (foundDirectories.Count() == 0)
-                    OnSendFeedback(string.Format("No results for {0}", fileName));
-                else
+                foreach (string fileToProlif in filesToProlif)
                 {
-                    OnSendFeedback(fileName);
-                    CopyFilesToDirectories(outputPath, foundDirectories, fileToProlif);
+                    string fileName = Path.GetFileName(fileToProlif);
+                    List<string> foundDirectories = SearchDirectoriesEndsWith(fileName);
+
+                    if (foundDirectories.Count() == 0)
+                        OnSendFeedback(string.Format("No results for {0}", fileName));
+                    else
+                    {
+                        OnSendFeedback(fileName);
+                        CopyFilesToDirectories(outputPath, foundDirectories, fileToProlif);
+                    }
                 }
+                ProliferateExtraFtexs(filesToProlif, outputPath);
+            } 
+            catch (Exception e)
+            {
+                OnSendFeedback(e);
             }
-            ProliferateExtraFtexs(filesToProlif, outputPath);
         }
 
         public void DoProliferateFromReference(string[] filesToProlif, string outputPath, bool setInRoot, string referenceFile)
@@ -76,38 +83,9 @@ namespace FileProliferator
             }
         }
 
-        private void ProliferateExtraFtexs(string[] filesToProlif, string outputPath)  // Edge case: If the user has more ftexs files than the vanilla texture, this needs to proliferate the extras (but not into pftxs folders).
+        private void ProliferateExtraFtexs(string[] filesToProlif, string outputPath) 
         {
-            /*foreach (string fileToProlif in filesToProlif)
-            {
-                if (fileToProlif.EndsWith(".ftex")) 
-                {
-                    List<string> ftexsFilePaths = new List<string>();
-                    string textureName = Path.GetFileNameWithoutExtension(fileToProlif);
-                    List<string> TppCondensedPath = SearchDirectoriesCondensedPath(Path.GetFileName(fileToProlif));
-
-                    for (int i = 2; i <= 6; i++) // .2.ftexs through .6.ftexs
-                    {
-                        string ftexsFileName = string.Format("{0}.{1}.ftexs", textureName, i);
-                        string ftexsFilePath = Path.Combine(Path.GetDirectoryName(fileToProlif), ftexsFileName);
-                        if (filesToProlif.Contains(ftexsFilePath))
-                        {
-                            if (!ftexsFilePaths.Contains(ftexsFileName))
-                            {
-                                ftexsFilePaths.Add(ftexsFilePath);
-                            }
-                        }
-                    }
-                    foreach(string ftexsFilePath in ftexsFilePaths)
-                    {
-                        if (SearchDirectoriesEndsWith(ftexsFilePath).Count == 0) // an ftexs file that the user is trying to proliferate does not exist in the vanilla files (their texture has more ftexs than the vanilla texture)
-                        {
-                            CopyFilesToDirectories(outputPath, TppCondensedPath, ftexsFilePath);
-                        }
-                    }
-                }
-            }*/
-            foreach (string fileToProlif in filesToProlif) // hopefully a little faster
+            foreach (string fileToProlif in filesToProlif)
             {
                 if (fileToProlif.EndsWith(".ftex"))
                 {
@@ -118,25 +96,6 @@ namespace FileProliferator
                     string textureName = Path.GetFileNameWithoutExtension(fileToProlif);
                     string textureDir = Path.GetDirectoryName(fileToProlif);
 
-                    /*
-                    int largestVanillaFtexs = 1;
-                    foreach (string tppListPath in TppFileList) // this should remove preexisting ftexs files from copying again, but it might not be as fast as just overwriting ftexs that potentially already exist
-                    {
-                        if (tppListPath.Contains(textureName) && tppListPath.EndsWith(".ftexs"))
-                        {
-                            for (int i = 2; i <= 6; i++)
-                            {
-                                if (tppListPath.EndsWith(string.Format("{0}.{1}.ftexs")))
-                                {
-                                    if (i > largestVanillaFtexs)
-                                    {
-                                        largestVanillaFtexs = i;
-                                    }
-                                }
-                            }
-                        }
-                    } i = largestvanillaftexs + 1
-                    */
                     for (int i = 2; i <= 6; i++)
                     {
                         string largerftexs = string.Format("{0}\\{1}.{2}.ftexs", textureDir, textureName, i);
@@ -192,7 +151,8 @@ namespace FileProliferator
                 foreach (string filePath in filepaths)
                 {
                     string newFilePath = Path.Combine(fullPath, Path.GetFileName(filePath));
-                    File.Copy(filePath, newFilePath, true);
+                    if (Path.GetFullPath(filePath) != Path.GetFullPath(newFilePath))
+                        File.Copy(filePath, newFilePath, true);
                 }
             }
         }

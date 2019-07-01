@@ -13,23 +13,31 @@ using System.Windows.Forms;
 
 namespace ArchiveUnpacker
 {
-    public class FeedbackEventArgs : EventArgs { public string Feedback { get; set; } }
+    public class FeedbackEventArgs : EventArgs { public object Feedback { get; set; } }
 
     public class UnpackManager
     {
         public event EventHandler<FeedbackEventArgs> SendFeedback;
 
-        protected virtual void OnSendFeedback(string feedback)
+        protected virtual void OnSendFeedback(object feedback)
         {
             SendFeedback?.Invoke(this, new FeedbackEventArgs() { Feedback = feedback });
         }
 
         public void DoUnpack(string[] archiveFilePaths, string outputDir, bool isCondensed)
         {
-            ReadDictionaries();
-            UnpackQarArchives(archiveFilePaths, outputDir);
-            UnpackChildArchives(outputDir, isCondensed);
-            //UnpackChildArchivesCatchEdgeCases(outputDir, isCondensed);
+            try
+            {
+                ReadDictionaries();
+                UnpackQarArchives(archiveFilePaths, outputDir);
+                UnpackChildArchives(outputDir, isCondensed);
+                //UnpackChildArchivesCatchEdgeCases(outputDir, isCondensed);
+
+            }
+            catch (Exception e)
+            {
+                OnSendFeedback(e);
+            }
         }
 
         private void ReadDictionaries()
