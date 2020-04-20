@@ -81,7 +81,7 @@ namespace ArchiveTransferrer
 
             textTPPEXE.Text = inputDialog.FileName;
 
-            mgoTextureDat = Path.Combine(Path.GetDirectoryName(textTPPEXE.Text), "mgo/texture0.dat");
+            mgoTextureDat = Path.Combine(Path.GetDirectoryName(textTPPEXE.Text), "mgo\\texture0.dat");
             if (File.Exists(mgoTextureDat))
             {
                 labelMGOFOUND.Text = "'mgo/texture0.dat' Found!";
@@ -94,16 +94,18 @@ namespace ArchiveTransferrer
             }
 
             tppMasterDir = Path.Combine(Path.GetDirectoryName(textTPPEXE.Text), "master");
+
             updateTransferButton();
         }
 
         private void updateTransferButton()
         {
-            bool g0sReady = textGZEXE.Text != "" && File.Exists(textGZEXE.Text);
-            bool mgoReady = textTPPEXE.Text != "" && File.Exists(textTPPEXE.Text);
+            bool g0sReady = textGZEXE.Text != "" && File.Exists(gzTextureG0s);
+            bool mgoReady = textTPPEXE.Text != "" && File.Exists(mgoTextureDat);
             bool masterExists = Directory.Exists(tppMasterDir);
 
             buttonStart.Enabled = g0sReady && mgoReady && masterExists;
+            Console.WriteLine(gzTextureG0s + " | " + mgoTextureDat + " | " + tppMasterDir);
         }
         
     }

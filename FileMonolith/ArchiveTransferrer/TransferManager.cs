@@ -23,7 +23,7 @@ namespace ArchiveTransferrer
             SendFeedback?.Invoke(this, new FeedbackEventArgs() { Feedback = feedback });
         }
 
-        public void Transfer(string g0sSrcPath, string mgoTexPath, string masterDir)
+        public void Transfer(string GZg0sSrc, string MGODatSrc, string masterDir)
         {
             OnSendFeedback("Reading dictionaries...");
             // READ DICTIONARIES
@@ -39,17 +39,17 @@ namespace ArchiveTransferrer
 
             OnSendFeedback("Copying Ground Zeroes Archive...");
             // COPY G0S TO WORK DIRECTORY
-            string g0sCpyPath = Path.Combine(workDir, Path.GetFileName(g0sSrcPath));
-            File.Copy(g0sSrcPath, g0sCpyPath, true);
+            string GZg0sDst = Path.Combine(workDir, Path.GetFileName(GZg0sSrc));
+            File.Copy(GZg0sSrc, GZg0sDst, true);
 
 
             OnSendFeedback("Extracting data_01.g0s...");
             // OPEN G0S
             IDirectory outputDirectory = new FileSystemDirectory(g0sWorkDir);
-            using (FileStream input = new FileStream(g0sCpyPath, FileMode.Open))
+            using (FileStream input = new FileStream(GZg0sDst, FileMode.Open))
             {
                 GzsFile file = new GzsFile();
-                file.Name = Path.GetFileNameWithoutExtension(g0sCpyPath);
+                file.Name = Path.GetFileNameWithoutExtension(GZg0sDst);
                 file.Read(input);
                 foreach (var exportedFile in file.ExportFiles(input))
                 {
@@ -80,7 +80,7 @@ namespace ArchiveTransferrer
             OnSendFeedback("Copying MGO Archive...");
             // COPY MGO DAT TO MASTER/
             string MGODatDst = Path.Combine(masterDir, "texture5_mgo0.dat");
-            File.Copy(mgoTexPath, GZDatDst);
+            File.Copy(MGODatSrc, MGODatDst);
         }
 
         private static void ReadDictionaries()
