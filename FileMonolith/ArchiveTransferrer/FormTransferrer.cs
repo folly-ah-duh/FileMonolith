@@ -60,9 +60,14 @@ namespace ArchiveTransferrer
             if (transferrer.errorOccurred != "")
             {
                 MessageBox.Show("An error occurred while attempting to transfer data:\n" + transferrer.errorOccurred);
-            } else
+            } 
+            if (transferrer.successfulTransfers.Count > 0)
             {
-                MessageBox.Show("Done! The following archives were transferred successfully: " + transferrer.GetSuccessfulTransfers());
+                MessageBox.Show("The following archives were transferred successfully: " + transferrer.GetSuccessfulTransfers());
+            }
+            else
+            {
+                MessageBox.Show("No archives were transferred.");
             }
         }
 
