@@ -18,10 +18,35 @@ namespace ArchiveTransferrer
         string mgoTextureDat;
         string tppMasterDir;
 
+        string GZExe;
+        string TPPExe;
+
         public FormTransferrer()
         {
             InitializeComponent();
-        }
+            /*
+            string defaultGZExe = Properties.Settings.Default.GZExe;
+            if (!string.IsNullOrEmpty(defaultGZExe))
+            {
+                if (Directory.Exists(defaultGZExe))
+                {
+                    GZExe = defaultGZExe;
+                    textGZEXE.Text = defaultGZExe;
+                }
+            }
+            string defaultTPPExe = Properties.Settings.Default.TPPExe;
+            if (!string.IsNullOrEmpty(defaultTPPExe))
+            {
+                if (Directory.Exists(defaultTPPExe))
+                {
+                    TPPExe = defaultTPPExe;
+                    textTPPEXE.Text = defaultTPPExe;
+                }
+            }
+
+            updateTransferButton();
+            */    
+    }
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
@@ -32,6 +57,13 @@ namespace ArchiveTransferrer
 
             ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { transferrer.Transfer(gzTextureG0s, mgoTextureDat, tppMasterDir); }));
 
+            if (transferrer.errorOccurred != "")
+            {
+                MessageBox.Show("An error occurred while attempting to transfer data:\n" + transferrer.errorOccurred);
+            } else
+            {
+                MessageBox.Show("Done! The following archives were transferred successfully: " + transferrer.GetSuccessfulTransfers());
+            }
         }
 
         private void buttonGZEXE_Click(object sender, EventArgs e)
@@ -41,26 +73,12 @@ namespace ArchiveTransferrer
             inputDialog.Multiselect = false;
 
             DialogResult selectionResult = inputDialog.ShowDialog();
-            if (selectionResult != DialogResult.OK)
-            {
-                //labelGZFOUND.Text = "";
-                //textGZEXE.Text = "";
-                return;
-            }
-
+            if (selectionResult != DialogResult.OK) return;
             textGZEXE.Text = inputDialog.FileName;
 
-            gzTextureG0s = Path.Combine(Path.GetDirectoryName(textGZEXE.Text), "data_01.g0s");
-            if (File.Exists(gzTextureG0s))
-            {
-                labelGZFOUND.Text = "'data_01.g0s' Found!";
-                labelGZFOUND.ForeColor = Color.ForestGreen;
-            }
-            else
-            {
-                labelGZFOUND.Text = "'data_01.g0s' Not Found!";
-                labelGZFOUND.ForeColor = Color.Red;
-            }
+            string filename = "data_01.g0s";
+            gzTextureG0s = Path.Combine(Path.GetDirectoryName(textGZEXE.Text), filename);
+            checkForArchive(gzTextureG0s, filename, labelGZFOUND);
 
             updateTransferButton();
         }
@@ -72,30 +90,29 @@ namespace ArchiveTransferrer
             inputDialog.Multiselect = false;
 
             DialogResult selectionResult = inputDialog.ShowDialog();
-            if (selectionResult != DialogResult.OK)
-            {
-                //labelMGOFOUND.Text = "";
-                //textTPPEXE.Text = "";
-                return;
-            }
-
+            if (selectionResult != DialogResult.OK) return;
             textTPPEXE.Text = inputDialog.FileName;
+            
+            string filename = "mgo\\texture0.dat";
+            mgoTextureDat = Path.Combine(Path.GetDirectoryName(textTPPEXE.Text), filename);
+            checkForArchive(mgoTextureDat, filename, labelMGOFOUND);
+            
+            tppMasterDir = Path.Combine(Path.GetDirectoryName(textTPPEXE.Text), "master");
+            updateTransferButton();
+        }
 
-            mgoTextureDat = Path.Combine(Path.GetDirectoryName(textTPPEXE.Text), "mgo\\texture0.dat");
-            if (File.Exists(mgoTextureDat))
+        private void checkForArchive(string archivePath, string filename, Label statusLabel)
+        {
+            if (File.Exists(archivePath))
             {
-                labelMGOFOUND.Text = "'mgo/texture0.dat' Found!";
-                labelMGOFOUND.ForeColor = Color.ForestGreen;
+                statusLabel.Text = string.Format("'{0}' Found!", filename);
+                statusLabel.ForeColor = Color.ForestGreen;
             }
             else
             {
-                labelMGOFOUND.Text = "'mgo/texture0.dat' Not Found!";
-                labelMGOFOUND.ForeColor = Color.Red;
+                statusLabel.Text = string.Format("'{0}' Not Found!", filename);
+                statusLabel.ForeColor = Color.Red;
             }
-
-            tppMasterDir = Path.Combine(Path.GetDirectoryName(textTPPEXE.Text), "master");
-
-            updateTransferButton();
         }
 
         private void updateTransferButton()

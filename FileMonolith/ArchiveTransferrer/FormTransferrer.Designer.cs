@@ -144,7 +144,7 @@
             this.Controls.Add(this.textGZEXE);
             this.Name = "FormTransferrer";
             this.ShowIcon = false;
-            this.Text = "File Transferrer";
+            this.Text = "Archive Transferrer";
             this.ResumeLayout(false);
             this.PerformLayout();
 
