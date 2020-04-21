@@ -8,6 +8,7 @@ File Monolith is a set of file management tools for Metal Gear Solid V. The goal
 * **Mass Texture Converter**: The user can select a directory and the tool will attempt to convert all texture files from .ftex(s) to .dds. The resulting .dds files are sent to a target directory.
 * **File Proliferator**: The user selects any number of files, of any type. The tool will search for these files in the MGSV file structure. If these filenames are found in the game files, the tool creates a directory structure to mirror MGSV's and then copies the user's files into the structure.
 * **Filename Updater**: The user can select any files with hashed filenames, and the tool will attempt to update their names and filepaths using the latest qar_dictionary. Any updated files are copied to the target directory.
+* **Archive Transferrer**: The user selects their Ground Zeroes and Phantom Pain executable files, and the tool will attempt to automatically transfer the game archives from Ground Zeroes and Metal Gear Online into The Phantom Pain.
 ## Archive Unpacker
 
 The Archive Unpacker is a simple tool which unpacks user-specified .dat files, and then unpacks all .fpk, .fpkd, .pftxs and .sbp files which resided in the .dat files into one single directory structure. 
@@ -86,3 +87,18 @@ Notes:
   * (Ex: 3cb5fc5a6e14d.2.ftexs -> \targetDirectory\\am10_main0_def_c00_bsm.2.ftexs)
 * When a filename is updated, the tool can include the file's full filepath by checking the "Include Directory Structure" checkbox. The copy of the updated file will be sent into the directory structure.
   * (Ex: 3cb5fc5a6e14d.2.ftexs -> \targetDirectory\Assets\tpp\weapon\amo\Pictures\am10_main0_def_c00_bsm.2.ftexs)
+
+## Archive Transferrer
+
+The Archive Transferrer allows for the user to automatically import Ground Zeroes and Metal Gear Online data into The Phantom Pain. This tool will reformat and copy the files as necessary, without modifying the original data.
+
+This tool has one purpose:
+1. To provide the user with a streamlined method of pulling data archives from Ground Zeroes and Metal Gear Online into The Phantom Pain.
+
+Notes:
+* Currently the tool is only designed to transfer the "texture" archives from Ground Zeroes / Metal Gear Online. A future update should allow the user to transfer the "chunk" archives.
+* This tool utilizes my [fork of GzsTool](https://github.com/JosephZoeller/GzsTool) in order to reformat the Ground Zeroes archive.
+* Transferring the archives may take a moment.
+* In order to read these foreign archives, SnakeBite makes the necessary edits to the foxfs.dat upon its initial setup, independently from the Archive Transferrer.
+  * There is no order to setting up SnakeBite and importing foreign archives, but both steps are necessary in order to utilize the other games' data.
+
