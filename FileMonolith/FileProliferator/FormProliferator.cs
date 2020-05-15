@@ -220,10 +220,17 @@ namespace FileProliferator
             updateManager.SendFeedback += processWindow.OnSendFeedback;
             proliferator.SendFeedback += processWindow.OnSendFeedback;
             textureManager.SendFeedback += processWindow.OnSendFeedback;
+            string err = "";
 
             if (checkConvertDds.Checked)
             {
                 ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { selectedFilePaths = textureManager.convertDdsToFtex(selectedFilePaths); }));
+                err = textureManager.errorMsg;
+                if (err != "")
+                {
+                    DisplayError(err);
+                    return;
+                }
             }
             Console.WriteLine("Ftex Conversion Complete");
             int ddsConversionFailedCount = textureManager.getConversionFailedCount();
@@ -237,17 +244,30 @@ namespace FileProliferator
             if(checkNameUpdates.Checked)
             {
                 ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { selectedFilePaths = updateManager.DoUpdates(selectedFilePaths); }));
+                err = updateManager.errorMsg;
+                if (err != "")
+                {
+                    DisplayError(err);
+                    return;
+                }
             }
 
             if (!checkRefFile.Checked)
             {
-                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { proliferator.DoProliferate(selectedFilePaths, outputDirectory); }));
+                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { proliferator.DoProliferate(selectedFilePaths, outputDirectory); }));                
             }
             else
             {
                 ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { proliferator.DoProliferateFromReference(selectedFilePaths, outputDirectory, checkSetRefRoot.Checked, referenceFileName); }));
             }
+            err = proliferator.errorMsg;
+            if (err != "")
+            {
+                DisplayError(err);
+                return;
+            }
             Console.WriteLine("DoProliferate Complete");
+
             if (checkPullTextures.Checked)
             {
                 if (checkRefFile.Checked)
@@ -259,7 +279,12 @@ namespace FileProliferator
                     ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { textureManager.PullVanillaTextures(outputDirectory, VanillaTexturesPath, selectedFilePaths); }));
                     //textureManager.PullVanillaTextures(outputDirectory, VanillaTexturesPath, selectedFilePaths);
                 }
-
+                err = textureManager.errorMsg;
+                if (err != "")
+                {
+                    DisplayError(err);
+                    return;
+                }
                 Console.WriteLine("PullVanillaTextures Complete");
             }
 
@@ -277,10 +302,23 @@ namespace FileProliferator
                 if (doPftxsPack)
                 {
                     ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { textureManager.PackPftxsFolders(outputDirectory); }));
+                    err = textureManager.errorMsg;
+                    if (err != "")
+                    {
+                        DisplayError(err);
+                        return;
+                    }
+
                     DialogResult dialogResult = MessageBox.Show("The _pftxs folders have been packed into .pftxs files.\n\nWould you like to delete the leftover _pftxs folders?", "Delete _pftxs Folders?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                     if (dialogResult == DialogResult.Yes)
                     {
                         ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { textureManager.DeletePftxsFolders(outputDirectory); }));
+                        err = textureManager.errorMsg;
+                        if (err != "")
+                        {
+                            DisplayError(err);
+                            return;
+                        }
                     }
                 }
                 Console.WriteLine("Pack _PFTXS Complete");
@@ -307,6 +345,11 @@ namespace FileProliferator
                     checkNameUpdates.Checked = false;
                 }
             }
+        }
+
+        public void DisplayError(string errorMsg)
+        {
+            MessageBox.Show("An error occurred while attempting to proliferate data:\n" + errorMsg);
         }
     }
 }

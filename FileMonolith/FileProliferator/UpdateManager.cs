@@ -12,6 +12,7 @@ namespace FileProliferator
     class UpdateManager
     {
         private int successfulUpdateCount = 0;
+        public string errorMsg = "";
         private int totalCount = 0;
 
         public event EventHandler<FeedbackEventArgs> SendFeedback;
@@ -23,8 +24,16 @@ namespace FileProliferator
 
         public string[] DoUpdates(string[] inputFilePaths)
         {
-            ReadDictionary();
-            return UpdateFilePaths(inputFilePaths);
+            try
+            {
+                ReadDictionary();
+                return UpdateFilePaths(inputFilePaths);
+            }
+            catch (Exception e)
+            {
+                errorMsg = e.Message;
+                return new string[0];
+            }
         }
 
         private string[] UpdateFilePaths(string[] inputFilePaths)

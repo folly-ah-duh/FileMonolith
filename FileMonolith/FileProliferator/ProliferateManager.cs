@@ -10,6 +10,7 @@ namespace FileProliferator
     public class ProliferateManager
     {
         public static string[] TppFileList = File.ReadAllLines("TppMasterFileList.txt");
+        public string errorMsg = "";
 
         public event EventHandler<FeedbackEventArgs> SendFeedback;
 
@@ -39,22 +40,29 @@ namespace FileProliferator
             } 
             catch (Exception e)
             {
-                OnSendFeedback(e);
+                errorMsg = e.Message;
             }
         }
 
         public void DoProliferateFromReference(string[] filesToProlif, string outputPath, bool setInRoot, string referenceFile)
         {
-            List<string> foundDirectories = SearchDirectoriesEndsWith(referenceFile);
-
-            if (foundDirectories.Count() == 0)
-                OnSendFeedback(string.Format("No results for {0}", referenceFile));
-            else
+            try
             {
-                OnSendFeedback(referenceFile);
-                if (setInRoot)
-                    RootRefDirectories(foundDirectories);
-                CopyFilesToDirectories(outputPath, foundDirectories, filesToProlif);
+                List<string> foundDirectories = SearchDirectoriesEndsWith(referenceFile);
+
+                if (foundDirectories.Count() == 0)
+                    OnSendFeedback(string.Format("No results for {0}", referenceFile));
+                else
+                {
+                    OnSendFeedback(referenceFile);
+                    if (setInRoot)
+                        RootRefDirectories(foundDirectories);
+                    CopyFilesToDirectories(outputPath, foundDirectories, filesToProlif);
+                }
+            }
+            catch (Exception e)
+            {
+                errorMsg = e.Message;
             }
         }
 
