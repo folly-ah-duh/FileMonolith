@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilenameUpdater", "Filename
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArchiveTransferrer", "ArchiveTransferrer\ArchiveTransferrer.csproj", "{1A8742A5-A5AC-4059-9906-4A1C4AA79539}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextureAggregator", "TextureAggregator\TextureAggregator.csproj", "{6E60F497-0669-450B-BAA0-9E80E8B93739}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{1A8742A5-A5AC-4059-9906-4A1C4AA79539}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A8742A5-A5AC-4059-9906-4A1C4AA79539}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A8742A5-A5AC-4059-9906-4A1C4AA79539}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E60F497-0669-450B-BAA0-9E80E8B93739}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E60F497-0669-450B-BAA0-9E80E8B93739}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E60F497-0669-450B-BAA0-9E80E8B93739}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E60F497-0669-450B-BAA0-9E80E8B93739}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

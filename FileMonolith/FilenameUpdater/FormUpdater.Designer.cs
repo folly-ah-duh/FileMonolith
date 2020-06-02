@@ -40,11 +40,12 @@
             // 
             // buttonUpdate
             // 
-            this.buttonUpdate.Location = new System.Drawing.Point(420, 117);
+            this.buttonUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonUpdate.Location = new System.Drawing.Point(364, 117);
             this.buttonUpdate.Name = "buttonUpdate";
-            this.buttonUpdate.Size = new System.Drawing.Size(72, 33);
+            this.buttonUpdate.Size = new System.Drawing.Size(128, 33);
             this.buttonUpdate.TabIndex = 0;
-            this.buttonUpdate.Text = "Update";
+            this.buttonUpdate.Text = "Update Filenames";
             this.buttonUpdate.UseVisualStyleBackColor = true;
             this.buttonUpdate.Click += new System.EventHandler(this.buttonUpdate_Click);
             // 

@@ -80,11 +80,12 @@
             // 
             // buttonProliferate
             // 
-            this.buttonProliferate.Location = new System.Drawing.Point(350, 95);
+            this.buttonProliferate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonProliferate.Location = new System.Drawing.Point(346, 95);
             this.buttonProliferate.Name = "buttonProliferate";
-            this.buttonProliferate.Size = new System.Drawing.Size(142, 33);
+            this.buttonProliferate.Size = new System.Drawing.Size(146, 33);
             this.buttonProliferate.TabIndex = 3;
-            this.buttonProliferate.Text = "Build Directory Structure...";
+            this.buttonProliferate.Text = "Proliferate Files";
             this.buttonProliferate.UseVisualStyleBackColor = true;
             this.buttonProliferate.Click += new System.EventHandler(this.buttonProliferate_Click);
             // 
@@ -93,16 +94,16 @@
             this.textRefFile.Enabled = false;
             this.textRefFile.Location = new System.Drawing.Point(6, 42);
             this.textRefFile.Name = "textRefFile";
-            this.textRefFile.Size = new System.Drawing.Size(336, 20);
+            this.textRefFile.Size = new System.Drawing.Size(322, 20);
             this.textRefFile.TabIndex = 6;
             // 
             // buttonRefFile
             // 
-            this.buttonRefFile.Location = new System.Drawing.Point(348, 40);
+            this.buttonRefFile.Location = new System.Drawing.Point(334, 40);
             this.buttonRefFile.Name = "buttonRefFile";
-            this.buttonRefFile.Size = new System.Drawing.Size(126, 23);
+            this.buttonRefFile.Size = new System.Drawing.Size(140, 23);
             this.buttonRefFile.TabIndex = 5;
-            this.buttonRefFile.Text = "Select Reference...";
+            this.buttonRefFile.Text = "Set Reference File...";
             this.buttonRefFile.UseVisualStyleBackColor = true;
             this.buttonRefFile.Click += new System.EventHandler(this.buttonRefFile_Click);
             // 
@@ -182,11 +183,11 @@
             // 
             // buttonTextureDir
             // 
-            this.buttonTextureDir.Location = new System.Drawing.Point(348, 40);
+            this.buttonTextureDir.Location = new System.Drawing.Point(334, 40);
             this.buttonTextureDir.Name = "buttonTextureDir";
-            this.buttonTextureDir.Size = new System.Drawing.Size(126, 23);
+            this.buttonTextureDir.Size = new System.Drawing.Size(140, 23);
             this.buttonTextureDir.TabIndex = 14;
-            this.buttonTextureDir.Text = "Set Texture Directory...";
+            this.buttonTextureDir.Text = "Set Archives Directory...";
             this.buttonTextureDir.UseVisualStyleBackColor = true;
             this.buttonTextureDir.Click += new System.EventHandler(this.buttonTextureDir_Click);
             // 
@@ -197,7 +198,7 @@
             this.textTextureDir.Location = new System.Drawing.Point(6, 42);
             this.textTextureDir.Name = "textTextureDir";
             this.textTextureDir.ReadOnly = true;
-            this.textTextureDir.Size = new System.Drawing.Size(336, 20);
+            this.textTextureDir.Size = new System.Drawing.Size(322, 20);
             this.textTextureDir.TabIndex = 13;
             // 
             // groupStructureOptions

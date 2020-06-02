@@ -68,11 +68,12 @@
             // 
             // buttonStart
             // 
-            this.buttonStart.Location = new System.Drawing.Point(420, 117);
+            this.buttonStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonStart.Location = new System.Drawing.Point(364, 117);
             this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(72, 33);
+            this.buttonStart.Size = new System.Drawing.Size(128, 33);
             this.buttonStart.TabIndex = 13;
-            this.buttonStart.Text = "Convert";
+            this.buttonStart.Text = "Convert Textures";
             this.buttonStart.UseVisualStyleBackColor = true;
             this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
             // 

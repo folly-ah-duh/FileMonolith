@@ -70,9 +70,10 @@
             // buttonStart
             // 
             this.buttonStart.Enabled = false;
-            this.buttonStart.Location = new System.Drawing.Point(365, 151);
+            this.buttonStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonStart.Location = new System.Drawing.Point(364, 151);
             this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(127, 33);
+            this.buttonStart.Size = new System.Drawing.Size(128, 33);
             this.buttonStart.TabIndex = 14;
             this.buttonStart.Text = "Transfer Archives";
             this.buttonStart.UseVisualStyleBackColor = true;

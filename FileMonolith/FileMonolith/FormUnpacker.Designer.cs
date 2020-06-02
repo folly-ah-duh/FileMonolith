@@ -70,11 +70,12 @@
             // 
             // buttonStart
             // 
-            this.buttonStart.Location = new System.Drawing.Point(420, 117);
+            this.buttonStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonStart.Location = new System.Drawing.Point(372, 117);
             this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(72, 33);
+            this.buttonStart.Size = new System.Drawing.Size(120, 33);
             this.buttonStart.TabIndex = 5;
-            this.buttonStart.Text = "Unpack";
+            this.buttonStart.Text = "Unpack Archives";
             this.buttonStart.UseVisualStyleBackColor = true;
             this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
             // 
