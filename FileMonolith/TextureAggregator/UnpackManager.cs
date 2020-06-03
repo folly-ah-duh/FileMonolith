@@ -25,14 +25,14 @@ namespace TextureAggregator
             SendFeedback?.Invoke(this, new FeedbackEventArgs() { Feedback = feedback });
         }
 
-        public string[] DoUnpack(string pftxsPath, string outputDir)
+        public string[] DoUnpack(string pftxsPath, string outputDir, bool condense)
         {
             OnSendFeedback("Reading Dictionaries...");
             ReadDictionaries();
 
             OnSendFeedback(string.Format("Unpacking {0}...", Path.GetFileName(pftxsPath)));
-            var unpackedFiles = ReadArchive<PftxsFile>(pftxsPath, outputDir);
-            return unpackedFiles.Where(file => file.EndsWith(".ftex")).Select(file => file.Substring(0, file.Length - 5)).ToArray(); // full path but without extension
+            var unpackedFiles = ReadArchive<PftxsFile>(pftxsPath, outputDir, condense);
+            return unpackedFiles.Where(file => file.EndsWith(".ftex")).ToArray();
         }
 
         private void ReadDictionaries()
@@ -49,9 +49,8 @@ namespace TextureAggregator
             }
         }
 
-        public List<string> ReadArchive<T>(string filePath, string outputDir) where T : ArchiveFile, new()
+        public List<string> ReadArchive<T>(string filePath, string outputDir, bool condense) where T : ArchiveFile, new()
         {
-
             IDirectory iDir = new FileSystemDirectory(outputDir);
             List<string> fileNames = new List<string>();
 
@@ -62,21 +61,14 @@ namespace TextureAggregator
                 foreach (var exportedFile in file.ExportFiles(input))
                 {
                     fileNames.Add(exportedFile.FileName);
+                    
+                    string name = condense ? Path.GetFileName(exportedFile.FileName) : exportedFile.FileName;
 
-                    string nameOnly = Path.GetFileName(exportedFile.FileName);
-                    string exportedFileFullName = Path.Combine(outputDir, nameOnly);
+                    string exportedFileFullName = Path.Combine(outputDir, name);
                     if (!File.Exists(exportedFileFullName))
                     {
-                        iDir.WriteFile(nameOnly, exportedFile.DataStream);
+                        iDir.WriteFile(name, exportedFile.DataStream);
                     }
-
-                    /* TODO option to export to directory structure
-                    string exportedFileFullName = Path.Combine(outputDir, exportedFile.FileName);
-                    if (!File.Exists(exportedFileFullName))
-                    {
-                        iDir.WriteFile(exportedFile.FileName, exportedFile.DataStream);
-                    }
-                    */
                 }
             }
             return fileNames;

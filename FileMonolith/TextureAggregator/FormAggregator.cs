@@ -16,11 +16,14 @@ namespace TextureAggregator
     public partial class FormAggregator : Form
     {
         private string pftxsFullPath = "";
+        private bool condense = true;
+        public List<string> errorList = new List<string>();
 
         public FormAggregator()
         {
             InitializeComponent();
             checkConvertDDS.Checked = true;
+            checkDirStruc.Checked = false;
             buttonAggregate.Enabled = false;
 
             if (!checkTPPMasterFileListExists())
@@ -185,15 +188,28 @@ namespace TextureAggregator
             aggregator.SendFeedback += processWindow.OnSendFeedback;
             converter.SendFeedback += processWindow.OnSendFeedback;
 
-            string[] ftexPathsNoExt = { };
-            ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { ftexPathsNoExt = unpacker.DoUnpack(pftxsFullPath, textOutDir.Text); }));
-            ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { aggregator.DoAggregate(ftexPathsNoExt, textArchiveDir.Text, textOutDir.Text); }));
+            string[] unpackedPaths = { };
+            ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { unpackedPaths = unpacker.DoUnpack(pftxsFullPath, textOutDir.Text, condense); }));
+            string[] pulledFtexsPaths = { };
+            ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { pulledFtexsPaths = aggregator.DoAggregate(unpackedPaths, textArchiveDir.Text, textOutDir.Text, condense); }));
 
             if (checkConvertDDS.Checked)
             {
-                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { converter.DoMassConversion(textOutDir.Text, textOutDir.Text, true); })); // TODO toggle true false for subfolder retention
+                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { converter.DoMassConversion(textOutDir.Text, textOutDir.Text, !condense); }));
+
+                DialogResult dialogResult = MessageBox.Show("The .ftex files have been converted to .dds files.\n\nWould you like to delete the leftover .ftex and .ftexs files?", "Delete Fox Files?", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { aggregator.DeleteFoxTextures(unpackedPaths, pulledFtexsPaths, textOutDir.Text, condense); }));
+                }
             }
 
+            MessageBox.Show("Done!", "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void checkDirStruc_CheckedChanged(object sender, EventArgs e)
+        {
+            condense = !checkDirStruc.Checked;
         }
     }
 }

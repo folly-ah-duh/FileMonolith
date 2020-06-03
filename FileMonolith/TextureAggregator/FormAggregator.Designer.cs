@@ -39,12 +39,13 @@
             this.buttonArchiveDir = new System.Windows.Forms.Button();
             this.textArchiveDir = new System.Windows.Forms.TextBox();
             this.textInFiles = new System.Windows.Forms.TextBox();
+            this.checkDirStruc = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // checkConvertDDS
             // 
             this.checkConvertDDS.AutoSize = true;
-            this.checkConvertDDS.Location = new System.Drawing.Point(12, 179);
+            this.checkConvertDDS.Location = new System.Drawing.Point(12, 184);
             this.checkConvertDDS.Name = "checkConvertDDS";
             this.checkConvertDDS.Size = new System.Drawing.Size(137, 17);
             this.checkConvertDDS.TabIndex = 52;
@@ -154,11 +155,23 @@
             this.textInFiles.Size = new System.Drawing.Size(445, 20);
             this.textInFiles.TabIndex = 46;
             // 
+            // checkDirStruc
+            // 
+            this.checkDirStruc.AutoSize = true;
+            this.checkDirStruc.Location = new System.Drawing.Point(12, 161);
+            this.checkDirStruc.Name = "checkDirStruc";
+            this.checkDirStruc.Size = new System.Drawing.Size(152, 17);
+            this.checkDirStruc.TabIndex = 57;
+            this.checkDirStruc.Text = "Include Directory Structure";
+            this.checkDirStruc.UseVisualStyleBackColor = true;
+            this.checkDirStruc.CheckedChanged += new System.EventHandler(this.checkDirStruc_CheckedChanged);
+            // 
             // FormAggregator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(504, 213);
+            this.Controls.Add(this.checkDirStruc);
             this.Controls.Add(this.buttonArchiveDir);
             this.Controls.Add(this.textArchiveDir);
             this.Controls.Add(this.checkConvertDDS);
@@ -191,5 +204,6 @@
         private System.Windows.Forms.Button buttonArchiveDir;
         private System.Windows.Forms.TextBox textArchiveDir;
         private System.Windows.Forms.TextBox textInFiles;
+        private System.Windows.Forms.CheckBox checkDirStruc;
     }
 }
