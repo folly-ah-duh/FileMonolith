@@ -1,4 +1,5 @@
 ﻿using FolderSelect;
+using ProcessWindow;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -44,10 +45,11 @@ namespace TextureAggregator
             string defaultpftxs = Properties.Settings.Default.inputPftxs;
             if (!string.IsNullOrEmpty(defaultpftxs))
             {
-                if (Directory.Exists(defaultpftxs))
+                if (Directory.Exists(Path.GetDirectoryName(defaultpftxs)))
                 {
                     pftxsFullPath = defaultpftxs;
-                    textPftxs.Text = Path.GetFileName(pftxsFullPath);
+                    if (File.Exists(pftxsFullPath))
+                        textPftxs.Text = Path.GetFileName(pftxsFullPath);
                 }
             }
         }
@@ -96,13 +98,13 @@ namespace TextureAggregator
         {
             OpenFileDialog inputFileDialog = new OpenFileDialog();
             inputFileDialog.Filter = "Packed Fox Textures (*.pftxs)|*.pftxs";
-
-            string inputDirectory = Properties.Settings.Default.inputPftxs;
-            if (!string.IsNullOrEmpty(inputDirectory))
+            
+            if (!string.IsNullOrEmpty(pftxsFullPath))
             {
-                if (Directory.Exists(inputDirectory))
+                string initialD = Path.GetDirectoryName(pftxsFullPath);
+                if (Directory.Exists(initialD))
                 {
-                    inputFileDialog.InitialDirectory = inputDirectory;
+                    inputFileDialog.InitialDirectory = initialD;
                 }
             }
 
@@ -174,8 +176,23 @@ namespace TextureAggregator
             if (!checkTPPMasterFileListExists())
                 return;
 
-            
+            UnpackManager unpacker = new UnpackManager();
+            AggregateManager aggregator = new AggregateManager();
+            ConvertManager converter = new ConvertManager();
+            FormProcessing processWindow = new FormProcessing();
 
+            unpacker.SendFeedback += processWindow.OnSendFeedback;
+            aggregator.SendFeedback += processWindow.OnSendFeedback;
+            converter.SendFeedback += processWindow.OnSendFeedback;
+
+            string[] ftexPathsNoExt = { };
+            ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { ftexPathsNoExt = unpacker.DoUnpack(pftxsFullPath, textOutDir.Text); }));
+            ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { aggregator.DoAggregate(ftexPathsNoExt, textArchiveDir.Text, textOutDir.Text); }));
+
+            if (checkConvertDDS.Checked)
+            {
+                ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { converter.DoMassConversion(textOutDir.Text, textOutDir.Text, true); })); // TODO toggle true false for subfolder retention
+            }
 
         }
     }

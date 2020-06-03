@@ -283,7 +283,7 @@ namespace ArchiveUnpacker
                 file.Read(input);
                 foreach (var exportedFile in file.ExportFiles(input))
                 {
-                    iDir.WriteFile(exportedFile.FileName, exportedFile.DataStream); // doesn't bother checking since dats don't often have pre-existing stuff to overwrite. saved roughly 30 seconds when unpacking texture3
+                    iDir.WriteFile(exportedFile.FileName, exportedFile.DataStream); // doesn't bother checking if the file already exists, since dats don't often have pre-existing stuff to overwrite. saved roughly 30 seconds when unpacking texture3
                 }
             }
         }

@@ -18,7 +18,7 @@ namespace TextureAggregator
             }
             catch
             {
-                MessageBox.Show("Exception occurred during transfer: \n" + (Exception)e.Feedback);
+                MessageBox.Show("Exception occurred during transfer: \n" + e.Feedback);
             }
         }
     }
