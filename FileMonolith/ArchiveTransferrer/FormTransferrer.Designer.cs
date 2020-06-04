@@ -143,6 +143,7 @@
             this.Controls.Add(this.buttonTPPEXE);
             this.Controls.Add(this.textTPPEXE);
             this.Controls.Add(this.textGZEXE);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FormTransferrer";
             this.ShowIcon = false;
             this.Text = "Archive Transferrer";
