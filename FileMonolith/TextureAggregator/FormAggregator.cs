@@ -17,7 +17,7 @@ namespace TextureAggregator
     {
         private string pftxsFullPath = "";
         private bool condense = true;
-        public List<string> errorList = new List<string>();
+        public List<string> errorList;
 
         public FormAggregator()
         {
@@ -179,6 +179,7 @@ namespace TextureAggregator
             if (!checkTPPMasterFileListExists())
                 return;
 
+            errorList = new List<string>();
             UnpackManager unpacker = new UnpackManager();
             AggregateManager aggregator = new AggregateManager();
             ConvertManager converter = new ConvertManager();
@@ -190,6 +191,12 @@ namespace TextureAggregator
 
             string[] unpackedPaths = { };
             ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { unpackedPaths = unpacker.DoUnpack(pftxsFullPath, textOutDir.Text, condense); }));
+            if (unpacker.err != "")
+            {
+                DisplayError(unpacker.err);
+                return;
+            }
+
             string[] pulledFtexsPaths = { };
             ProcessingWindow.Show(processWindow, new Action((MethodInvoker)delegate { pulledFtexsPaths = aggregator.DoAggregate(unpackedPaths, textArchiveDir.Text, textOutDir.Text, condense); }));
 
@@ -204,12 +211,34 @@ namespace TextureAggregator
                 }
             }
 
+            errorList.AddRange(aggregator.errorList);
+            errorList.AddRange(converter.errorList);
+            if (errorList.Count() > 0)
+            {
+                DisplayErrorList();
+                return;
+            }
             MessageBox.Show("Done!", "Process Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void checkDirStruc_CheckedChanged(object sender, EventArgs e)
         {
             condense = !checkDirStruc.Checked;
+        }
+
+        public void DisplayErrorList()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (string err in errorList)
+            {
+                sb.AppendLine(err);
+            }
+            MessageBox.Show("The following errors occurred during aggregation:\n" + sb.ToString());
+        }
+
+        public void DisplayError(string errorMsg)
+        {
+            MessageBox.Show("An error occurred while attempting to proliferate data:\n" + errorMsg);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace TextureAggregator
     class AggregateManager
     {
         public event EventHandler<FeedbackEventArgs> SendFeedback;
-
+        public List<string> errorList = new List<string>();
 
         protected virtual void OnSendFeedback(object feedback)
         {
@@ -53,6 +53,10 @@ namespace TextureAggregator
                     OnSendFeedback("Copying...\n" + Path.GetFileName(srcPath));
                     File.Copy(srcPath, dstPath);
                 }
+                else
+                {
+                    errorList.Add("[Pull file]: Could not find " + srcPath + "\nPerhaps the archives are incomplete?");
+                }
             }
         }
 
@@ -62,27 +66,35 @@ namespace TextureAggregator
             OnSendFeedback("Deleting Leftover Fox Textures...");
             foreach (string ftexFile in ftexRelativePath)
             {
-                string outFile = Path.Combine(outputDir, ftexFile);
-
-                string outdds = outFile + ".dds";
-                if (File.Exists(outdds))
+                try
                 {
-                    string outftex = outFile + ".ftex";
-                    if (File.Exists(outftex))
-                        File.Delete(outftex);
+                    string outFile = Path.Combine(outputDir, ftexFile);
 
-                    string out1ftexs = outFile + ".1.ftexs";
-                    if (File.Exists(out1ftexs))
-                        File.Delete(out1ftexs);
+                    string outdds = outFile + ".dds";
+                    if (File.Exists(outdds))
+                    {
+                        string outftex = outFile + ".ftex";
+                        if (File.Exists(outftex))
+                            File.Delete(outftex);
+
+                        string out1ftexs = outFile + ".1.ftexs";
+                        if (File.Exists(out1ftexs))
+                            File.Delete(out1ftexs);
+                    }
                 }
+                catch { }
             }
 
             IEnumerable<string> ftexsRelativePath = condense ? pulledFtexsPaths.Select(entry => Path.GetFileName(entry)) : pulledFtexsPaths;
             foreach (string ftexsFile in ftexsRelativePath)
             {
-                string outfile = Path.Combine(outputDir, ftexsFile);
-                if (File.Exists(outfile))
-                    File.Delete(outfile);
+                try
+                {
+                    string outfile = Path.Combine(outputDir, ftexsFile);
+                    if (File.Exists(outfile))
+                        File.Delete(outfile);
+                }
+                catch { }
             }
         }
     }

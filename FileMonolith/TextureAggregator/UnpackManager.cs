@@ -19,6 +19,7 @@ namespace TextureAggregator
     {
 
         public event EventHandler<FeedbackEventArgs> SendFeedback;
+        public string err = "";
 
         protected virtual void OnSendFeedback(object feedback)
         {
@@ -27,12 +28,25 @@ namespace TextureAggregator
 
         public string[] DoUnpack(string pftxsPath, string outputDir, bool condense)
         {
-            OnSendFeedback("Reading Dictionaries...");
-            ReadDictionaries();
+            try
+            {
+                OnSendFeedback("Reading Dictionaries...");
+                ReadDictionaries();
+            } catch (Exception e)
+            {
+                err = "[Unpack .pftxs]: Failed to read qar_dictionary.txt";
+            }
 
             OnSendFeedback(string.Format("Unpacking {0}...", Path.GetFileName(pftxsPath)));
-            var unpackedFiles = ReadArchive<PftxsFile>(pftxsPath, outputDir, condense);
-            return unpackedFiles.Where(file => file.EndsWith(".ftex")).ToArray();
+            try
+            {
+                var unpackedFiles = ReadArchive<PftxsFile>(pftxsPath, outputDir, condense);
+                return unpackedFiles.Where(file => file.EndsWith(".ftex")).ToArray();
+            } catch (Exception e)
+            {
+                err = "[Unpack .pftxs]: Failed to unpack .pftxs file";
+            }
+            return new string[] { };
         }
 
         private void ReadDictionaries()
