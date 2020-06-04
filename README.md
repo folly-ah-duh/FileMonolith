@@ -9,6 +9,7 @@ File Monolith is a set of file management tools for Metal Gear Solid V. The goal
 * **File Proliferator**: The user selects any number of files, of any type. The tool will search for these files in the MGSV file structure. If these filenames are found in the game files, the tool creates a directory structure to mirror MGSV's and then copies the user's files into the structure.
 * **Filename Updater**: The user can select any files with hashed filenames, and the tool will attempt to update their names and filepaths using the latest qar_dictionary. Any updated files are copied to the target directory.
 * **Archive Transferrer**: The user selects their Ground Zeroes and Phantom Pain executable files, and the tool will attempt to automatically transfer the game archives from Ground Zeroes and Metal Gear Online into The Phantom Pain.
+* **Texture Aggregator**: The user can select a Packed Fox Textures (.pftxs) file, and the tool will attempt to automatically complete the textures partially contained in the .pftxs, and then convert the textures to DirectDraw Surface (.dds) format.
 ## Archive Unpacker
 
 The Archive Unpacker is a simple tool which unpacks user-specified .dat files, and then unpacks all .fpk, .fpkd, .pftxs and .sbp files which resided in the .dat files into one single directory structure. 
@@ -38,7 +39,7 @@ Notes:
   *For this reason, the Archive Unpacker must use the "Condensed Directory Structure" option (Some .ftex and .1.ftexs are contained only in .pftxs files, so they must be pulled into the same folder as the remaining .ftexs).
 * If "Convert Subfolders" is selected, the tool will also search through the subfolders of the input directory. The output directory will retain the directory structure. 
   * (Ex: Input\Assets\SomeTexture.ftex -> Output\Assets\SomeTexture.dds).
-* I recommend using the SageThumbs Plugin, in order to preview the .dds files in their thumbnails without opening them in GIMP or Photoshop.
+* I recommend using the SageThumbs Plugin in order to preview the .dds files in their thumbnails without opening them in GIMP or Photoshop.
   * https://www.cherubicsoft.com/en/projects/sagethumbs
 * Excluding MGO/SDD textures, the unpacked .dds files require ~21GB of space.
 
@@ -102,3 +103,16 @@ Notes:
 * In order to read these foreign archives, SnakeBite makes the necessary edits to the foxfs.dat upon its initial setup, independently from the Archive Transferrer.
   * There is no order to setting up SnakeBite and importing foreign archives, but both steps are necessary in order to utilize the other games' data.
 
+## Texture Aggregator
+
+The Texture Aggregator allows for the user to automatically build textures from a Packed Fox Textures (.pftxs) file. Given a .pftxs, the tool will unpack the file's partial textures, pull the additional texture files from the user's unpacked archives (from the Archive Unpacker's output), and then (optionally) convert all fox textures to DirectDraw Surface (.dds) files.
+
+This tool has one purpose:
+1. To provide the user with a streamlined method of collecting all textures associated with a specified .pftxs file.
+
+Notes:
+* This tool expects the user to have unpacked the contents of all of TPP's texture archives to a directory using the Archive Unpacker tool.
+* The aggregation process may take a moment, depending on the contents of the .pftxs file.
+* **TppMasterFileList.txt**: Similar to the File Proliferator tool, Texture Aggregator references TppMasterFileList.txt to determine the additional textures which need to be pulled from the unpacked texture archives.
+* I recommend using the SageThumbs Plugin in order to preview the .dds files in their thumbnails without opening them in GIMP or Photoshop.
+  * https://www.cherubicsoft.com/en/projects/sagethumbs
